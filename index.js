@@ -1,76 +1,149 @@
 #!/usr/bin/env node
+(function(e, a) { for(var i in a) e[i] = a[i]; }(exports, /******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
 
-var fs = require('fs');
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
 
-var spawn = require('child_process').spawn;
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId])
+/******/ 			return installedModules[moduleId].exports;
 
-var cmd1    = spawn('meteor', ['build', '.meteor/local/builds']);
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			exports: {},
+/******/ 			id: moduleId,
+/******/ 			loaded: false
+/******/ 		};
 
-var exec = require('child_process').exec;
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
 
-var cmd = 'cd .meteor/local/builds;';
+/******/ 		// Flag the module as loaded
+/******/ 		module.loaded = true;
 
-var cmd2 = 'now -e ROOT_URL=http://example.com -e ';
-
-var builddir = 'drp'; //TODO:
-var buildzip = builddir + '.tar.gz';
-
-// Meteor 1.3.x and earlier
-var dockerfile = `
-    FROM nodesource/jessie:0.10.43
-
-    ADD ${buildzip} .
-
-    WORKDIR "bundle/programs/server"
-
-    RUN npm install
-
-    WORKDIR "../../"
-
-    EXPOSE 80
-
-    CMD ["node", "main.js"]
-`;
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
 
 
-cmd1.stdout.on('data', function (data) {
-    console.log('stdout: ' + data.toString());
-});
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
 
-cmd1.stderr.on('data', function (data) {
-    console.log('stderr: ' + data.toString());
-});
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
 
-cmd1.on('close', function (code) {
-    console.log('child process exited with code ' + code.toString());
-    exec(cmd, function(error, stdout, stderr) {
-        if (stderr) {
-            console.log(stderr);
-            // return;
-        }
-        console.log(stdout);
-        fs.writeFile('Dockerfile', dockerfile, (err) => {
-            if (err) {
-                throw err;
-            }
-            console.log('It\'s saved!');
-            exec(cmd2, function(error, stdout, stderr) {
-                if (stderr) {
-                    console.log(stderr);
-                    // return
-                }
-                console.log(stdout);
-            });
-        });
-    });
-});
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
 
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(0);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
 
+	var _command = __webpack_require__(1);
 
+	var _command2 = _interopRequireDefault(_command);
 
-var buildzip = 'drp.tar.gz';
-// save dockerfile --> Dockerfile
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// now -e
-//
+	var fs = __webpack_require__(3);
+
+	// var spawn = require('child_process').spawn;
+
+	// var cmd1    = spawn('meteor', ['build', '.meteor/local/builds']);
+	var cmd1 = new _command2.default();
+
+	// var exec = require('child_process').exec;
+
+	// var cmd = 'cd .meteor/local/builds;';
+
+	// var cmd2 = 'now -e ROOT_URL=http://example.com -e ';
+	var cmd2 = new _command2.default();
+
+	var builddir = 'drp'; //TODO:
+	var buildzip = builddir + '.tar.gz';
+
+	// Meteor 1.3.x and earlier
+	var dockerfile = '\n    FROM nodesource/jessie:0.10.43\n\n    ADD ' + buildzip + ' .\n\n    WORKDIR "bundle/programs/server"\n\n    RUN npm install\n\n    WORKDIR "../../"\n\n    EXPOSE 80\n\n    CMD ["node", "main.js"]\n';
+
+	cmd1.run('meteor build .meteor/local/builds', 'building meteor app...').then(function (out) {
+	  console.log('done with cmd1', out);
+	  cmd2.run('cd .meteor/local/builds && now -e ROOT_URL=http://example.com', 'deploying using now service...').then(function (out2) {
+	    console.log('done with second...', out2);
+	    fs.writeFile('Dockerfile', dockerfile, function (err) {
+	      if (err) {
+	        throw err;
+	      }
+	      console.log('It\'s saved!');
+	    });
+	  });
+	});
+
+	var buildzip = 'dirty-mine.tar.gz';
+
+/***/ },
+/* 1 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _promiseSpawner = __webpack_require__(2);
+
+	var _promiseSpawner2 = _interopRequireDefault(_promiseSpawner);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var Command = function Command() {
+	  var _this = this;
+
+	  _classCallCheck(this, Command);
+
+	  this.run = function (cmd, msg) {
+	    if (msg) {
+	      console.log('[METEOR-NOW] -- ' + msg);
+	    }
+	    return _this.spawner.spawn(cmd);
+	  };
+
+	  var modifiers = {
+	    out: function out(d) {
+	      return d;
+	    },
+	    err: 'this is an error: '
+	  };
+	  this.spawner = new _promiseSpawner2.default(modifiers, {
+	    stdio: 'inherit'
+	  });
+	  this.spawner.out.pipe(process.stdout);
+	  this.spawner.err.pipe(process.stdout);
+	};
+
+	exports.default = Command;
+
+/***/ },
+/* 2 */
+/***/ function(module, exports) {
+
+	module.exports = require("promise-spawner");
+
+/***/ },
+/* 3 */
+/***/ function(module, exports) {
+
+	module.exports = require("fs");
+
+/***/ }
+/******/ ])));
