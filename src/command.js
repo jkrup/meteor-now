@@ -1,4 +1,5 @@
 import Spawner from 'promise-spawner';
+import logger from './logger';
 
 export default class Command {
   constructor() {
@@ -12,8 +13,8 @@ export default class Command {
     this.spawner.out.pipe(process.stdout);
     this.spawner.err.pipe(process.stdout);
   }
-  run = (cmd, msg) => {
-    if (msg) { console.log('[METEOR-NOW] -- ' + msg) }
+  run = (cmd) => {
+    logger(`running command: ${cmd}`)
     return this.spawner.spawn(cmd);
   }
 }

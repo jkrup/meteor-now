@@ -51,9 +51,13 @@
 
 	var _command2 = _interopRequireDefault(_command);
 
+	var _logger = __webpack_require__(3);
+
+	var _logger2 = _interopRequireDefault(_logger);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var fs = __webpack_require__(3);
+	var fs = __webpack_require__(4);
 
 	// var spawn = require('child_process').spawn;
 
@@ -74,14 +78,14 @@
 	var dockerfile = '\n    FROM nodesource/jessie:0.10.43\n\n    ADD ' + buildzip + ' .\n\n    WORKDIR "bundle/programs/server"\n\n    RUN npm install\n\n    WORKDIR "../../"\n\n    EXPOSE 80\n\n    CMD ["node", "main.js"]\n';
 
 	cmd1.run('meteor build .meteor/local/builds', 'building meteor app...').then(function (out) {
-	  console.log('done building...', out);
+	  (0, _logger2.default)('done building...');
 	  fs.writeFile('.meteor/local/builds/Dockerfile', dockerfile, function (err) {
 	    if (err) {
 	      throw err;
 	    }
-	    console.log('created dockerfile...');
+	    (0, _logger2.default)('created dockerfile...');
 	    cmd2.run('cd .meteor/local/builds && now -e ROOT_URL=http://example.com', 'deploying using now service...').then(function (out2) {
-	      console.log('done deploying...', out2);
+	      (0, _logger2.default)('done deploying...');
 	    });
 	  });
 	});
@@ -102,6 +106,10 @@
 
 	var _promiseSpawner2 = _interopRequireDefault(_promiseSpawner);
 
+	var _logger = __webpack_require__(3);
+
+	var _logger2 = _interopRequireDefault(_logger);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -111,10 +119,8 @@
 
 	  _classCallCheck(this, Command);
 
-	  this.run = function (cmd, msg) {
-	    if (msg) {
-	      console.log('[METEOR-NOW] -- ' + msg);
-	    }
+	  this.run = function (cmd) {
+	    (0, _logger2.default)('running command: ' + cmd);
 	    return _this.spawner.spawn(cmd);
 	  };
 
@@ -141,6 +147,20 @@
 
 /***/ },
 /* 3 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function (msg) {
+	  console.log("[METEOR-NOW] - " + msg);
+	};
+
+/***/ },
+/* 4 */
 /***/ function(module, exports) {
 
 	module.exports = require("fs");

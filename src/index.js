@@ -1,4 +1,5 @@
 import Command from './command';
+import logger from './logger';
 
 var fs = require('fs');
 
@@ -36,15 +37,15 @@ var dockerfile = `
 
 cmd1.run('meteor build .meteor/local/builds', 'building meteor app...')
   .then((out) => {
-    console.log('done building...', out);
+    logger('done building...');
     fs.writeFile('.meteor/local/builds/Dockerfile', dockerfile, (err) => {
       if (err) {
           throw err;
       }
-      console.log('created dockerfile...');
+      logger('created dockerfile...');
       cmd2.run('cd .meteor/local/builds && now -e ROOT_URL=http://example.com', 'deploying using now service...')
         .then((out2) => {
-          console.log('done deploying...', out2);
+          logger('done deploying...');
         });
     });
   });
