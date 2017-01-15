@@ -14,7 +14,7 @@ const cmd1 = new Command();
 // var cmd2 = 'now -e ROOT_URL=http://example.com -e ';
 const cmd2 = new Command();
 
-var builddir = 'drp'; //TODO:
+var builddir = 'dirty-mine'; //TODO:
 var buildzip = builddir + '.tar.gz';
 
 // Meteor 1.3.x and earlier
@@ -36,17 +36,17 @@ var dockerfile = `
 
 cmd1.run('meteor build .meteor/local/builds', 'building meteor app...')
   .then((out) => {
-    console.log('done with cmd1', out);
-    cmd2.run('cd .meteor/local/builds && now -e ROOT_URL=http://example.com', 'deploying using now service...')
-      .then((out2) => {
-        console.log('done with second...', out2);
-        fs.writeFile('Dockerfile', dockerfile, (err) => {
-          if (err) {
-              throw err;
-          }
-          console.log('It\'s saved!');
+    console.log('done building...', out);
+    fs.writeFile('.meteor/local/builds/Dockerfile', dockerfile, (err) => {
+      if (err) {
+          throw err;
+      }
+      console.log('created dockerfile...');
+      cmd2.run('cd .meteor/local/builds && now -e ROOT_URL=http://example.com', 'deploying using now service...')
+        .then((out2) => {
+          console.log('done deploying...', out2);
         });
-      });
+    });
   });
 
 var buildzip = 'dirty-mine.tar.gz';

@@ -67,21 +67,21 @@
 	// var cmd2 = 'now -e ROOT_URL=http://example.com -e ';
 	var cmd2 = new _command2.default();
 
-	var builddir = 'drp'; //TODO:
+	var builddir = 'dirty-mine'; //TODO:
 	var buildzip = builddir + '.tar.gz';
 
 	// Meteor 1.3.x and earlier
 	var dockerfile = '\n    FROM nodesource/jessie:0.10.43\n\n    ADD ' + buildzip + ' .\n\n    WORKDIR "bundle/programs/server"\n\n    RUN npm install\n\n    WORKDIR "../../"\n\n    EXPOSE 80\n\n    CMD ["node", "main.js"]\n';
 
 	cmd1.run('meteor build .meteor/local/builds', 'building meteor app...').then(function (out) {
-	  console.log('done with cmd1', out);
-	  cmd2.run('cd .meteor/local/builds && now -e ROOT_URL=http://example.com', 'deploying using now service...').then(function (out2) {
-	    console.log('done with second...', out2);
-	    fs.writeFile('Dockerfile', dockerfile, function (err) {
-	      if (err) {
-	        throw err;
-	      }
-	      console.log('It\'s saved!');
+	  console.log('done building...', out);
+	  fs.writeFile('.meteor/local/builds/Dockerfile', dockerfile, function (err) {
+	    if (err) {
+	      throw err;
+	    }
+	    console.log('created dockerfile...');
+	    cmd2.run('cd .meteor/local/builds && now -e ROOT_URL=http://example.com', 'deploying using now service...').then(function (out2) {
+	      console.log('done deploying...', out2);
 	    });
 	  });
 	});
