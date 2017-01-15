@@ -18,7 +18,7 @@ const main = async () => {
 }
 
 const buildMeteorApp = async () => {
-  const buildCommand = new Command('meteor build .meteor/local/builds');
+  const buildCommand = new Command('meteor build .meteor/local/builds --architecture os.linux.x86_64');
   logger('building meteor app...');
   await buildCommand.run();
   logger('done building...');
