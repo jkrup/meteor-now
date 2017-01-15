@@ -1,0 +1,15 @@
+{
+  "name": "meteor-now",
+  "version": "0.0.1",
+  "description": "Deploy meteor apps with one command using now.sh (https://zeit.co/now)",
+  "main": "index.js",
+  "repository": "https://github.com/mazlix/meteor-now",
+  "author": "Justin Krup",
+  "license": "MIT",
+  "bin": {
+      "meteor-now": "./index.js"
+  },
+  "dependencies": {
+    "now": "^2.0.3"
+  }
+}
