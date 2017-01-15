@@ -1,3 +1,5 @@
+const webpack = require('webpack');
+
 module.exports = {
   entry: './src/index.js',
   target: 'node',
@@ -8,6 +10,10 @@ module.exports = {
   },
   externals: [
     /^(?!\.|\/).+/i,
+  ],
+  plugins: [
+    // adds #!/usr/bin/env node at the top of bundle file
+    new webpack.BannerPlugin('#!/usr/bin/env node', { raw: true })
   ],
   module: {
     preLoaders: [
