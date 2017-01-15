@@ -2,7 +2,8 @@ import Spawner from 'promise-spawner';
 import logger from './logger';
 
 export default class Command {
-  constructor() {
+  constructor(command) {
+    this.command = command;
     const modifiers = {
       out: function(d) { return d },
       err: 'this is an error: '
@@ -13,8 +14,8 @@ export default class Command {
     this.spawner.out.pipe(process.stdout);
     this.spawner.err.pipe(process.stdout);
   }
-  run = (cmd) => {
-    logger(`running command: ${cmd}`)
-    return this.spawner.spawn(cmd);
+  run = () => {
+    logger(`running command: ${this.command}`)
+    return this.spawner.spawn(this.command);
   }
 }

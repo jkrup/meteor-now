@@ -10,7 +10,8 @@
     "meteor-now": "./index.js"
   },
   "scripts": {
-    "build": "webpack"
+    "build": "webpack",
+    "build:watch": "webpack --watch"
   },
   "dependencies": {
     "now": "^2.0.3",
@@ -18,9 +19,10 @@
   },
   "devDependencies": {
     "babel-core": "^6.21.0",
+    "babel-loader": "^6.2.10",
+    "babel-polyfill": "^6.20.0",
     "babel-preset-latest": "^6.16.0",
     "babel-preset-stage-2": "^6.18.0",
-    "babel-loader": "^6.2.10",
     "webpack": "^1.14.0"
   }
 }
