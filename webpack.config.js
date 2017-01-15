@@ -4,7 +4,7 @@ module.exports = {
   entry: './src/index.js',
   target: 'node',
   output: {
-    path: './',
+    path: './dist',
     filename: './index.js',
     libraryTarget: 'commonjs',
   },

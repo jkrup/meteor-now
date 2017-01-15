@@ -7,10 +7,10 @@
   "author": "Justin Krup",
   "license": "MIT",
   "bin": {
-    "meteor-now": "./index.js"
+    "meteor-now": "./dist/index.js"
   },
   "scripts": {
-    "build": "webpack",
+    "prepublish": "webpack",
     "build:watch": "webpack --watch"
   },
   "dependencies": {
