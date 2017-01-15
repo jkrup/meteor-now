@@ -1,16 +1,20 @@
 import fs from 'fs';
 import Command from './Command';
 import logger from './logger';
-import Dockerfile from './Dockerfile';
-require('babel-polyfill');
-// Meteor 1.3.x and earlier
-
+import { dockerfile } from './dockerfile';
+// required for async/await to work
+import 'babel-polyfill';
 
 const main = async () => {
-  console.log('foo');
-  // await buildMeteorApp();
-  // await createDockerfile();
-  // await deployMeteorApp();
+  try {
+    await buildMeteorApp();
+    await createDockerfile();
+    await deployMeteorApp();
+  } catch (e) {
+    console.error(e);
+    // exit node process with error
+    process.exit(1);
+  }
 }
 
 const buildMeteorApp = async () => {
@@ -21,7 +25,7 @@ const buildMeteorApp = async () => {
 }
 
 const createDockerfile = async () => {
-  const dockerfileContents = Dockerfile.getContents();
+  const dockerfileContents = dockerfile.getContents();
   logger('creating Dockerfile...');
   new Promise(function(resolve, reject) {
     fs.writeFile('.meteor/local/builds/Dockerfile', dockerfileContents, (err) => {

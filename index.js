@@ -59,17 +59,14 @@
 
 	var _logger2 = _interopRequireDefault(_logger);
 
-	var _Dockerfile = __webpack_require__(5);
-
-	var _Dockerfile2 = _interopRequireDefault(_Dockerfile);
+	var _dockerfile = __webpack_require__(5);
 
 	__webpack_require__(6);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
-	// Meteor 1.3.x and earlier
+	// required for async/await to work
 
 
 	var main = function () {
@@ -78,17 +75,36 @@
 	      while (1) {
 	        switch (_context.prev = _context.next) {
 	          case 0:
-	            console.log('foo');
-	            // await buildMeteorApp();
-	            // await createDockerfile();
-	            // await deployMeteorApp();
+	            _context.prev = 0;
+	            _context.next = 3;
+	            return buildMeteorApp();
 
-	          case 1:
+	          case 3:
+	            _context.next = 5;
+	            return createDockerfile();
+
+	          case 5:
+	            _context.next = 7;
+	            return deployMeteorApp();
+
+	          case 7:
+	            _context.next = 13;
+	            break;
+
+	          case 9:
+	            _context.prev = 9;
+	            _context.t0 = _context['catch'](0);
+
+	            console.error(_context.t0);
+	            // exit node process with error
+	            process.exit(1);
+
+	          case 13:
 	          case 'end':
 	            return _context.stop();
 	        }
 	      }
-	    }, _callee, undefined);
+	    }, _callee, undefined, [[0, 9]]);
 	  }));
 
 	  return function main() {
@@ -132,7 +148,7 @@
 	      while (1) {
 	        switch (_context3.prev = _context3.next) {
 	          case 0:
-	            dockerfileContents = _Dockerfile2.default.getContents();
+	            dockerfileContents = _dockerfile.dockerfile.getContents();
 
 	            (0, _logger2.default)('creating Dockerfile...');
 	            new Promise(function (resolve, reject) {
@@ -287,10 +303,11 @@
 	    return '\n      FROM ' + _this.dockerImage + '\n      ADD ' + buildzip + ' .\n      WORKDIR "bundle/programs/server"\n      RUN npm install\n      WORKDIR "../../"\n      EXPOSE 80\n      CMD ["node", "main.js"]\n    ';
 	  };
 
+	  // Meteor 1.3.x and earlier
 	  this.dockerImage = 'nodesource/jessie:0.10.43';
 	};
 
-	exports.default = Dockerfile;
+	var dockerfile = exports.dockerfile = new Dockerfile();
 
 /***/ },
 /* 6 */

@@ -1,8 +1,9 @@
 var builddir = 'dirty-mine'; //TODO:
 var buildzip = builddir + '.tar.gz';
 
-export default class Dockerfile {
+class Dockerfile {
   constructor() {
+    // Meteor 1.3.x and earlier
     this.dockerImage = 'nodesource/jessie:0.10.43';
   }
   getContents = () => {
@@ -17,3 +18,5 @@ export default class Dockerfile {
     `;
   }
 }
+
+export let dockerfile = new Dockerfile();
