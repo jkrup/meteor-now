@@ -176,21 +176,22 @@
 
 	var deployMeteorApp = function () {
 	  var _ref4 = _asyncToGenerator(regeneratorRuntime.mark(function _callee4() {
-	    var deployCommand;
+	    var args, deployCommand;
 	    return regeneratorRuntime.wrap(function _callee4$(_context4) {
 	      while (1) {
 	        switch (_context4.prev = _context4.next) {
 	          case 0:
-	            deployCommand = new _Command2.default('cd .meteor/local/builds && now -e ROOT_URL=http://example.com');
+	            args = process.argv.slice(2).join(' ');
+	            deployCommand = new _Command2.default('cd .meteor/local/builds && now ' + args);
 
 	            (0, _logger2.default)('deploying using now service...');
-	            _context4.next = 4;
+	            _context4.next = 5;
 	            return deployCommand.run();
 
-	          case 4:
+	          case 5:
 	            (0, _logger2.default)('done deploying...');
 
-	          case 5:
+	          case 6:
 	          case 'end':
 	            return _context4.stop();
 	        }
