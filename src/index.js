@@ -1,53 +1,48 @@
-import Command from './command';
+import fs from 'fs';
+import Command from './Command';
 import logger from './logger';
+import { dockerfile } from './dockerfile';
+// required for async/await to work
+import 'babel-polyfill';
 
-var fs = require('fs');
+const main = async () => {
+  try {
+    await buildMeteorApp();
+    await createDockerfile();
+    await deployMeteorApp();
+  } catch (e) {
+    console.error(e);
+    // exit node process with error
+    process.exit(1);
+  }
+}
 
-// var spawn = require('child_process').spawn;
+const buildMeteorApp = async () => {
+  const buildCommand = new Command('meteor build .meteor/local/builds');
+  logger('building meteor app...');
+  await buildCommand.run();
+  logger('done building...');
+}
 
-// var cmd1    = spawn('meteor', ['build', '.meteor/local/builds']);
-const cmd1 = new Command();
-
-// var exec = require('child_process').exec;
-
-// var cmd = 'cd .meteor/local/builds;';
-
-// var cmd2 = 'now -e ROOT_URL=http://example.com -e ';
-const cmd2 = new Command();
-
-var builddir = 'dirty-mine'; //TODO:
-var buildzip = builddir + '.tar.gz';
-
-// Meteor 1.3.x and earlier
-var dockerfile = `
-    FROM nodesource/jessie:0.10.43
-
-    ADD ${buildzip} .
-
-    WORKDIR "bundle/programs/server"
-
-    RUN npm install
-
-    WORKDIR "../../"
-
-    EXPOSE 80
-
-    CMD ["node", "main.js"]
-`;
-
-cmd1.run('meteor build .meteor/local/builds', 'building meteor app...')
-  .then((out) => {
-    logger('done building...');
-    fs.writeFile('.meteor/local/builds/Dockerfile', dockerfile, (err) => {
+const createDockerfile = async () => {
+  const dockerfileContents = dockerfile.getContents();
+  logger('creating Dockerfile...');
+  new Promise(function(resolve, reject) {
+    fs.writeFile('.meteor/local/builds/Dockerfile', dockerfileContents, (err) => {
       if (err) {
-          throw err;
+        reject(err);
       }
-      logger('created dockerfile...');
-      cmd2.run('cd .meteor/local/builds && now -e ROOT_URL=http://example.com', 'deploying using now service...')
-        .then((out2) => {
-          logger('done deploying...');
-        });
+      logger('done creating Dockerfile...');
+      resolve();
     });
   });
+}
 
-var buildzip = 'dirty-mine.tar.gz';
+const deployMeteorApp = async () => {
+  const deployCommand = new Command('cd .meteor/local/builds && now -e ROOT_URL=http://example.com');
+  logger('deploying using now service...');
+  await deployCommand.run();
+  logger('done deploying...');
+}
+
+main();
