@@ -25,7 +25,7 @@ class Dockerfile {
       WORKDIR bundle/programs/server
       RUN npm install
       WORKDIR ../../
-      EXPOSE 80
+      EXPOSE 3000
       CMD ["node", "main.js"]
     `;
   }
