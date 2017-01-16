@@ -23,7 +23,9 @@ class Dockerfile {
       FROM ${this.dockerImage}
       ENV NPM_CONFIG_LOGLEVEL warn
       LABEL name="${this.builddir}"
-      ADD ${this.buildzip} .
+      COPY . .
+      RUN cat x* > bundle.tar.gz
+      RUN tar -xzf bundle.tar.gz
       WORKDIR bundle/programs/server
       RUN npm install
       WORKDIR ../../
