@@ -15,20 +15,24 @@ class Dockerfile {
     // Determine bundle name (it's based on meteor directory)
     const pwd = process.env.PWD;
     const builddir = pwd.split('/')[pwd.split('/').length - 1];
-    data = fs.readFileSync('.meteor/versions', {
-      encoding: 'utf8'
-    });
     this.buildzip = `${builddir}.tar.gz`;
   }
 
   getContents = () => {
     return `
       FROM ${this.dockerImage}
-      ADD ${this.buildzip} .
-      WORKDIR "bundle/programs/server"
+
+      RUN mkdir -p /usr/src/app/programs/server/
+      COPY programs/server/package.json /usr/src/app/programs/server/package.json
+
+      WORKDIR /usr/src/app/programs/server/
       RUN npm install
-      WORKDIR "../../"
+
+      COPY . /usr/src/app/
+      WORKDIR /usr/src/app/
+
       EXPOSE 80
+
       CMD ["node", "main.js"]
     `;
   }

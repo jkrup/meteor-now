@@ -8,6 +8,7 @@ import 'babel-polyfill';
 const main = async () => {
   try {
     await buildMeteorApp();
+    await unpackBuiltApp();
     await createDockerfile();
     await deployMeteorApp();
   } catch (e) {
@@ -24,11 +25,18 @@ const buildMeteorApp = async () => {
   logger('done building...');
 }
 
+const unpackBuiltApp = async () => {
+    const unpackCommand = new Command(`tar -xvzf .meteor/local/builds/${dockerfile.buildzip} -C .meteor/local`);
+    logger(`Unpacking ${dockerfile.buildzip}`);
+    await unpackCommand.run();
+    logger('Finished Unpacking...');
+}
+
 const createDockerfile = async () => {
   const dockerfileContents = dockerfile.getContents();
   logger('creating Dockerfile...');
   new Promise(function(resolve, reject) {
-    fs.writeFile('.meteor/local/builds/Dockerfile', dockerfileContents, (err) => {
+    fs.writeFile('.meteor/local/bundle/Dockerfile', dockerfileContents, (err) => {
       if (err) {
         reject(err);
       }
