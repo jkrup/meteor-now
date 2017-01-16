@@ -15,7 +15,7 @@ const buildMeteorApp = async () => {
 const createDockerfile = async () => {
   const dockerfileContents = dockerfile.getContents();
   logger('creating Dockerfile...');
-  new Promise((resolve, reject) => {
+  return new Promise((resolve, reject) => {
     fs.writeFile('.meteor/local/builds/Dockerfile', dockerfileContents, (err) => {
       if (err) {
         reject(err);
@@ -56,13 +56,13 @@ const main = async () => {
     await deployMeteorApp();
     await cleanup();
   } catch (e) {
-    console.error(e);
+    console.error(e); // eslint-disable-line no-console
     // exit node process with error
     process.exit(1);
   }
-}
+};
 
 
-export default function() {
+export default function () {
   main();
 }

@@ -4,7 +4,7 @@ class Dockerfile {
   constructor() {
     // Set node to correct version based on meteor version (1.4+ vs 1.3-)
     const data = fs.readFileSync('.meteor/versions', {
-      encoding: 'utf8'
+      encoding: 'utf8',
     });
     const version = data.match(/\nmeteor@(.*)\n/)[1];
     const microVersion = version.split('.')[1];
@@ -18,8 +18,8 @@ class Dockerfile {
     this.buildzip = `${this.builddir}.tar.gz`;
   }
 
-  getContents = () => {
-    return `
+  getContents = () =>
+     `
       FROM ${this.dockerImage}
       ENV NPM_CONFIG_LOGLEVEL warn
       LABEL name="${this.builddir}"
@@ -31,8 +31,8 @@ class Dockerfile {
       WORKDIR ../../
       EXPOSE 3000
       CMD ["node", "main.js"]
-    `;
-  }
+    `
+
 }
 
-export let dockerfile = new Dockerfile();
+export const dockerfile = new Dockerfile();
