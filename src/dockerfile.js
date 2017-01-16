@@ -3,6 +3,9 @@ import fs from 'fs';
 class Dockerfile {
   constructor() {
     // Set node to correct version based on meteor version (1.4+ vs 1.3-)
+    const data = fs.readFileSync('.meteor/versions', {
+      encoding: 'utf8'
+    });
     const version = data.match(/\nmeteor@(.*)\n/)[1];
     const microVersion = version.split('.')[1];
     this.dockerImage = (parseInt(microVersion, 10) < 4)
