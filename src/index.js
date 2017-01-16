@@ -26,7 +26,7 @@ const buildMeteorApp = async () => {
 }
 
 const unpackBuiltApp = async () => {
-    const unpackCommand = new Command(`tar -xvzf .meteor/local/builds/${dockerfile.buildzip} -C .meteor/local`);
+    const unpackCommand = new Command(`tar -xzf .meteor/local/builds/${dockerfile.buildzip} -C .meteor/local`);
     logger(`Unpacking ${dockerfile.buildzip}`);
     await unpackCommand.run();
     logger('Finished Unpacking...');
