@@ -22,9 +22,9 @@ class Dockerfile {
     return `
       FROM ${this.dockerImage}
       ADD ${this.buildzip} .
-      WORKDIR "bundle/programs/server"
+      WORKDIR bundle/programs/server
       RUN npm install
-      WORKDIR "../../"
+      WORKDIR ../../
       EXPOSE 80
       CMD ["node", "main.js"]
     `;

@@ -41,7 +41,7 @@ const createDockerfile = async () => {
 
 const deployMeteorApp = async () => {
   const args = process.argv.slice(2).join(' ');
-  const deployCommand = new Command(`cd .meteor/local/bundle && now ${args}`);
+  const deployCommand = new Command(`cd .meteor/local/builds && now ${args}`);
   logger('deploying using now service...');
   await deployCommand.run();
   logger('done deploying...');
