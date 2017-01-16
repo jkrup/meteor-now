@@ -9,6 +9,13 @@ Just do `meteor-now -e ROOT_URL=http://example.com -e MONGO_URL=mongo://...` and
 # Usage
 Create an account at [https://zeit.co/login](https://zeit.co/login)
 
+Install `now` package
+```
+yarn global add now
+or
+npm install -g now
+```
+
 Install `meteor-now` package
 ```
 yarn global add meteor-now
