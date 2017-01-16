@@ -1,19 +1,13 @@
-const webpack = require('webpack');
-
 module.exports = {
-  entry: './src/index.js',
+  entry: './src/app.js',
   target: 'node',
   output: {
     path: './dist',
-    filename: './index.js',
+    filename: './app.js',
     libraryTarget: 'commonjs',
   },
   externals: [
     /^(?!\.|\/).+/i,
-  ],
-  plugins: [
-    // adds #!/usr/bin/env node at the top of bundle file
-    new webpack.BannerPlugin('#!/usr/bin/env node', { raw: true })
   ],
   module: {
     preLoaders: [

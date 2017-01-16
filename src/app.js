@@ -49,4 +49,6 @@ const deployMeteorApp = async () => {
 
 // TODO: const cleanup = async () = > {
 
-main();
+export default function() {
+  main();
+}
