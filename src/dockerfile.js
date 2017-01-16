@@ -14,13 +14,15 @@ class Dockerfile {
 
     // Determine bundle name (it's based on meteor directory)
     const pwd = process.env.PWD;
-    const builddir = pwd.split('/')[pwd.split('/').length - 1];
-    this.buildzip = `${builddir}.tar.gz`;
+    this.builddir = pwd.split('/')[pwd.split('/').length - 1];
+    this.buildzip = `${this.builddir}.tar.gz`;
   }
 
   getContents = () => {
     return `
       FROM ${this.dockerImage}
+      ENV NPM_CONFIG_LOGLEVEL warn
+      LABEL name="${this.builddir}"
       ADD ${this.buildzip} .
       WORKDIR bundle/programs/server
       RUN npm install
