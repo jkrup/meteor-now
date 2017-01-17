@@ -1,6 +1,9 @@
 module.exports = {
   entry: './src/app.js',
   target: 'node',
+  node: {
+    __dirname: false,
+  },
   output: {
     path: './dist',
     filename: './app.js',
