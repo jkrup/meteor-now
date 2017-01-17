@@ -1,6 +1,6 @@
 {
   "name": "meteor-now",
-  "version": "0.0.1",
+  "version": "0.0.4",
   "description": "Deploy meteor apps with one command using now.sh (https://zeit.co/now)",
   "main": "./index.js",
   "repository": "https://github.com/mazlix/meteor-now",
@@ -11,7 +11,9 @@
   },
   "scripts": {
     "prepublish": "webpack",
-    "build:watch": "webpack --watch"
+    "publish": "webpack",
+    "build:watch": "webpack --watch",
+    "eslint": "eslint ."
   },
   "dependencies": {
     "babel-polyfill": "^6.20.0",
