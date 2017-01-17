@@ -35,7 +35,7 @@ const splitBuild = async () => {
 
 const deployMeteorApp = async () => {
   const args = process.argv.slice(2).join(' ');
-  const deployCommand = new Command(`cd .meteor/local/builds && now -e PORT=3000 ${args}`);
+  const deployCommand = new Command(`cd .meteor/local/builds && ${__dirname}/../node_modules/.bin/now -e PORT=3000 ${args}`);
   logger('deploying using now service...');
   await deployCommand.run();
   logger('done deploying...');
