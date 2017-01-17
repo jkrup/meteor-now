@@ -3,7 +3,10 @@ import fs from 'fs';
 import Command from './command';
 import logger from './logger';
 import { dockerfile } from './dockerfile';
+import { readFile, isStringJson, getNodeEnv, didPassInMeteorSettings } from './utils';
 // required for async/await to work
+
+let meteorSettingsVar;
 
 const buildMeteorApp = async () => {
   const buildCommand = new Command('meteor build .meteor/local/builds --architecture=os.linux.x86_64');
@@ -33,9 +36,33 @@ const splitBuild = async () => {
   logger('split up build');
 };
 
+const handleMeteorSettings = async () => {
+  if (didPassInMeteorSettings()) {
+    // user passed in METEOR_SETTINGS, no need to look for settings.json
+    return;
+  }
+  const env = getNodeEnv();
+  const settingsFile = `${env}.settings.json`;
+  logger(`looking for meteor settings file ${settingsFile} in root of project...`);
+  const settingsString = await readFile(settingsFile);
+  if (settingsString) {
+    // settings file found
+    if (!isStringJson(settingsString)) {
+      logger(`ERROR: ${settingsFile} file is not valid JSON`);
+      process.exit(1);
+    } else {
+      meteorSettingsVar = settingsString.replace(/[\n ]/g, '');
+      logger('found settings file');
+    }
+  } else {
+    logger('no settings file found');
+  }
+};
+
 const deployMeteorApp = async () => {
   const args = process.argv.slice(2).join(' ');
-  const deployCommand = new Command(`cd .meteor/local/builds && now -e PORT=3000 ${args}`);
+  const meteorSettingsArg = meteorSettingsVar ? `-e METEOR_SETTINGS='${meteorSettingsVar}'` : '';
+  const deployCommand = new Command(`cd .meteor/local/builds && now -e PORT=3000 ${args} ${meteorSettingsArg}`);
   logger('deploying using now service...');
   await deployCommand.run();
   logger('done deploying...');
@@ -53,6 +80,7 @@ const main = async () => {
     await buildMeteorApp();
     await createDockerfile();
     await splitBuild();
+    await handleMeteorSettings();
     await deployMeteorApp();
     await cleanup();
   } catch (e) {
