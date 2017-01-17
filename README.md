@@ -6,6 +6,9 @@ It wraps around the now command allowing you to pass in any environment variable
 
 Just do `meteor-now -e ROOT_URL=http://example.com -e MONGO_URL=mongo://...` and instantly deploy your meteor app like you could back in the good 'ol days of `meteor deploy`
 
+# Example
+https://testmet-zioriusvcj.now.sh/
+
 # Usage
 Create an account at [https://zeit.co/login](https://zeit.co/login)
 
