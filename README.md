@@ -49,3 +49,7 @@ Following the convention of the `NODE_ENV` environment varaibe, `meteor-now` use
 It will either look for `development.settings.json` or `production.settings.json` in your root meteor directory.
 
 Note that `meteor-now` will look for `development.settings.json` by default unless `NODE_ENV` is set to production or METEOR_SETTINGS was passed in as a result of the first option above.
+
+# Authors
+Justin Krup [@mazlix](https://github.com/mazlix)
+Mirza Joldic [@purplecones](https://github.com/purplecones)
