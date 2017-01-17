@@ -1,6 +1,6 @@
 {
   "name": "meteor-now",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Deploy meteor apps with one command using now.sh (https://zeit.co/now)",
   "main": "./index.js",
   "repository": "https://github.com/mazlix/meteor-now",
