@@ -34,3 +34,18 @@ meteor-now -e ROOT_URL=http://example.com -e MONGO_URL=mongo://...
 You will receive a unique link to your deployed app
 
 ![unique-link](assets/unique-link.png "Unique Link Terminal Image")
+
+# Using METEOR_SETTINGS
+There are two ways you can set the METEOR_SETTINGS environment variable in your deployments
+
+1. Using `now secrets`
+```
+now secrets add meteor-settings '{ "public": { "foo": "bar" }}'
+meteor-now -e METEOR_SETTINGS=@meteor-settings
+```
+
+2. Using `development.settings.json` and `production.settings.json`
+Following the convention of the `NODE_ENV` environment varaibe, `meteor-now` uses `NODE_ENV` to determine which file to look for.
+It will either look for `development.settings.json` or `production.settings.json` in your root meteor directory.
+
+Note that `meteor-now` will look for `development.settings.json` by default unless `NODE_ENV` is set to production or METEOR_SETTINGS was passed in as a result of the first option above.
