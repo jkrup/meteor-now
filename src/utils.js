@@ -16,6 +16,7 @@ const readFile = async (path) => {
     fs.readFile(path, { encoding: 'utf8' }, (err, data) => {
       if (err) {
         logger(`could not read ${path}`);
+        resolve(null)
       } else {
         resolve(data);
       }
