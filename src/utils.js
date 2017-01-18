@@ -74,10 +74,13 @@ const getArgs = () => {
   };
 };
 
+const isDebug = () => getArgs().d === true;
+
 export {
   isStringJson,
   readFile,
   getNodeEnv,
   didPassInMeteorSettings,
   getArgs,
+  isDebug,
 };
