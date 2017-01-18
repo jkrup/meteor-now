@@ -50,9 +50,34 @@ const didPassInMeteorSettings = () => {
   return true;
 };
 
+const getArgs = () => {
+  const args = minimist(process.argv.slice(2));
+
+  if (!args.e) {
+    // no -e flag was passed
+    return args;
+  }
+
+  // handle -e arguments. minimist returns a string to args.e if single flag is passed
+  // and array if multiple are passed. This handles it so that getArgs() always returns
+  // array for args.e regardless if one or more environment variables were passed
+  let parsedEnvironmentArguments = [];
+  const splitEnvironmentArgument = arg => arg.split('=');
+  if (args.e && args.e instanceof Array) {
+    parsedEnvironmentArguments = args.e.map(arg => splitEnvironmentArgument(arg));
+  } else {
+    parsedEnvironmentArguments = splitEnvironmentArgument(args.e);
+  }
+  return {
+    ...args,
+    e: parsedEnvironmentArguments,
+  };
+};
+
 export {
   isStringJson,
   readFile,
   getNodeEnv,
   didPassInMeteorSettings,
+  getArgs,
 };
