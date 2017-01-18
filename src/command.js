@@ -1,8 +1,9 @@
 import Spawner from 'promise-spawner';
 import logger from './logger';
+import { isDebug } from './utils';
 
 export default class Command {
-  constructor(command, inheritIo = false) {
+  constructor(command, inheritIo = isDebug()) {
     this.command = command;
     const modifiers = {
       out(d) { return d; },
