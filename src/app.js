@@ -1,7 +1,7 @@
 // required for async/await to work
 import 'babel-polyfill';
 import fs from 'fs';
-import { spinner } from './spinner';
+import spinner from './spinner';
 import Command from './command';
 import logger from './logger';
 import { dockerfile } from './dockerfile';
@@ -38,7 +38,7 @@ const splitBuild = async () => {
 };
 
 const handleMeteorSettings = async () => {
-  spinner.start('checking for meteor settings file')
+  spinner.start('checking for meteor settings file');
   if (!didPassInMeteorSettings()) {
     const env = getNodeEnv();
     const settingsFile = `${env}.settings.json`;
@@ -60,12 +60,13 @@ const handleMeteorSettings = async () => {
 };
 
 const deployMeteorApp = async () => {
-  spinner.start('deploying using now service');
-  spinner.stopAndPersist();
+  spinner.start('deploying using now service (this may take several minutes)');
   const args = process.argv.slice(2).join(' ');
   const meteorSettingsArg = meteorSettingsVar ? `-e METEOR_SETTINGS='${meteorSettingsVar}'` : '';
-  const deployCommand = new Command(`cd .meteor/local/builds && now -e PORT=3000 ${args} ${meteorSettingsArg}`, true);
+  const deployCommand = new Command(`cd .meteor/local/builds && now -e PORT=3000 ${args} ${meteorSettingsArg}`);
   await deployCommand.run();
+  spinner.setMessage(`meteor app deployed :)`);
+  spinner.succeed();
 };
 
 const cleanup = async () => {
