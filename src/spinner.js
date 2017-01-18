@@ -1,20 +1,33 @@
 import ora from 'ora';
+import { isDebug } from './utils';
+
+const prefix = '[METEOR-NOW]';
 
 class Spinner {
   constructor() {
     this.spinner = ora();
   }
   start(message = null) {
-    if (message) {
-      this.setMessage(message);
+    if (!isDebug()) {
+      if (message) { this.setMessage(message); }
+      this.spinner.start();
     }
-    this.spinner.start();
   }
-  stop = () => this.spinner.stop();
-  stopAndPersist = () => this.spinner.stopAndPersist();
-  succeed = () => this.spinner.succeed();
-  fail = () => this.spinner.fail();
-  setMessage = (message) => this.spinner.text = message;
+  stop() {
+    if (!isDebug()) { this.spinner.stop(); }
+  }
+  stopAndPersist() {
+    if (!isDebug()) { this.spinner.stopAndPersist(); }
+  }
+  succeed() {
+    if (!isDebug()) { this.spinner.succeed(); }
+  }
+  fail() {
+    if (!isDebug()) { this.spinner.fail(); }
+  }
+  setMessage(message) { this.spinner.text = `${prefix} - ${message}`; }
 }
 
-export const spinner = new Spinner();
+const spinner = new Spinner();
+
+export default spinner;
