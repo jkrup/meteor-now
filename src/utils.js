@@ -76,6 +76,11 @@ const getArgs = () => {
 
 const isDebug = () => getArgs().d === true;
 
+const getBuildName = () => {
+  const pwd = process.env.PWD;
+  return pwd.split('/')[pwd.split('/').length - 1];
+};
+
 export {
   isStringJson,
   readFile,
@@ -83,4 +88,5 @@ export {
   didPassInMeteorSettings,
   getArgs,
   isDebug,
+  getBuildName,
 };
