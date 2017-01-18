@@ -1,5 +1,7 @@
-export default (msg, isVerbose = false) => {
-  if (isVerbose) {
-    console.log(`[METEOR-NOW] - ${msg}`); // eslint-disable-line no-console
+import { isDebug } from './utils';
+
+export default (message) => {
+  if (isDebug()) {
+    console.log(`[METEOR-NOW] - ${message}`); // eslint-disable-line no-console
   }
 };
