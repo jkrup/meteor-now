@@ -12,18 +12,12 @@ https://testmet-zioriusvcj.now.sh/
 # Usage
 Create an account at [https://zeit.co/login](https://zeit.co/login)
 
-Install `now` package
-```
-yarn global add now
-or
-npm install -g now
-```
+Install `now` and `meteor-now` packages:
 
-Install `meteor-now` package
 ```
-yarn global add meteor-now
+yarn global add now meteor-now
 or
-npm install -g meteor-now
+npm install -g now meteor-now
 ```
 
 In your Meteor app directory, run `meteor-now` passing in environment variables according to `now` [docs](https://zeit.co/blog/environment-variables-secrets)
