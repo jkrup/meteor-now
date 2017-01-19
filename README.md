@@ -1,46 +1,56 @@
+![METEOR-NOW](assets/zeit.meteor.png "ZEIT + METEOR")
+
 # Meteor Now
 
-`meteor-now` is a tool to let you instantly deploy your Meteor apps with [now](http://zeit.co/now). By using Dockerfile.
+`meteor-now` is a tool to let you instantly deploy your Meteor apps with [now](http://zeit.co/now) with one command.
 
-It wraps around the now command allowing you to pass in any environment variables as you normally would `now -e`
+Just do `meteor-now -e ROOT_URL=http://example.com` and instantly deploy your meteor app like you could back in the good 'ol days of `meteor deploy`
 
-Just do `meteor-now -e ROOT_URL=http://example.com -e MONGO_URL=mongo://...` and instantly deploy your meteor app like you could back in the good 'ol days of `meteor deploy`
-
-# Example
+## Deployed Example App
 https://testmet-zioriusvcj.now.sh/
 
 # Usage
-Create an account at [https://zeit.co/login](https://zeit.co/login)
-
-Install `now` and `meteor-now` packages:
-
+## Install
+Install the `now` and `meteor-now` packages:
 ```
-yarn global add now meteor-now
-or
-npm install -g now meteor-now
+$ npm install -g now meteor-now
 ```
 
+## Configure `now` account
+```
+$ now --login
+> Enter your email: <your email>
+> Please follow the link sent to <your email> to log in.
+> Verify that the provided security code in the email matches Pragmatic Manta Ray.
+
+✔ Confirmed email address!
+
+> Logged in successfully. Token saved in ~/.now.json
+```
+
+## Deployment
 In your Meteor app directory, run `meteor-now` passing in environment variables according to `now` [docs](https://zeit.co/blog/environment-variables-secrets)
 ```
-meteor-now -e ROOT_URL=http://example.com -e MONGO_URL=mongo://...
+$ meteor-now -e ROOT_URL=http://example.com
 ```
 
 You will receive a unique link to your deployed app
 
 ![unique-link](assets/unique-link.png "Unique Link Terminal Image")
 
-# Using METEOR_SETTINGS
-There are two ways you can set the METEOR_SETTINGS environment variable in your deployments
+# Additional Info
+## Using METEOR_SETTINGS
+Currently there are two ways you can set the METEOR_SETTINGS environment variable in your deployments
 
-1. Using `now secrets`
+- Using `now secrets`
 ```
-now secrets add meteor-settings '{ "public": { "foo": "bar" }}'
+$ now secrets add meteor-settings '{ "public": { "foo": "bar" }}'
 meteor-now -e METEOR_SETTINGS=@meteor-settings
 ```
 
-2. Using `development.settings.json` and `production.settings.json`
+- Using `development.settings.json` and `production.settings.json`
 Following the convention of the `NODE_ENV` environment varaibe, `meteor-now` uses `NODE_ENV` to determine which file to look for.
-It will either look for `development.settings.json` or `production.settings.json` in your root meteor directory.
+It will either look for `development.settings.json` or `production.settings.json` in your root Meteor directory.
 
 Note that `meteor-now` will look for `development.settings.json` by default unless `NODE_ENV` is set to production or METEOR_SETTINGS was passed in as a result of the first option above.
 
