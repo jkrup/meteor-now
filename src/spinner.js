@@ -1,11 +1,14 @@
 import ora from 'ora';
+import cliSpinners from 'cli-spinners';
 import { isDebug } from './utils';
 
 const prefix = '[METEOR-NOW]';
 
 class Spinner {
   constructor() {
-    this.spinner = ora();
+    this.spinner = ora({
+      spinner: cliSpinners.dots12,
+    });
   }
   start(message = null) {
     if (!isDebug()) {

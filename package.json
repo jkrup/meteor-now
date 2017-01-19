@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "babel-polyfill": "^6.20.0",
+    "cli-spinners": "^1.0.0",
     "minimist": "^1.2.0",
     "ora": "^1.0.0",
     "promise-spawner": "^1.1.3"
