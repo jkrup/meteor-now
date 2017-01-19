@@ -10,35 +10,32 @@ import { readFile, isStringJson, getNodeEnv, didPassInMeteorSettings } from './u
 let meteorSettingsVar;
 
 const buildMeteorApp = async () => {
-  spinner.start('building meteor app');
+  const message = 'building meteor app';
+  spinner.start(`${message} (this may take several minutes)`);
   const buildCommand = new Command('meteor build .meteor/local/builds --architecture=os.linux.x86_64');
   await buildCommand.run();
-  spinner.succeed();
+  spinner.succeed(message);
 };
+
 
 const createDockerfile = async () => {
   const dockerfileContents = dockerfile.getContents();
-  spinner.start('creating Dockerfile');
   return new Promise((resolve, reject) => {
     fs.writeFile('.meteor/local/builds/Dockerfile', dockerfileContents, (err) => {
       if (err) {
         reject(err);
       }
-      spinner.succeed();
       resolve();
     });
   });
 };
 
 const splitBuild = async () => {
-  spinner.start('preparing build for upload');
   const splitCommand = new Command(`split -b 999999 .meteor/local/builds/${dockerfile.buildzip} .meteor/local/builds/x && rm .meteor/local/builds/${dockerfile.buildzip}`);
   await splitCommand.run();
-  spinner.succeed();
 };
 
 const handleMeteorSettings = async () => {
-  spinner.start('checking for meteor settings file');
   if (!didPassInMeteorSettings()) {
     const env = getNodeEnv();
     const settingsFile = `${env}.settings.json`;
@@ -56,34 +53,41 @@ const handleMeteorSettings = async () => {
       logger('no settings file found');
     }
   }
-  spinner.succeed();
 };
 
 const deployMeteorApp = async () => {
-  spinner.start('deploying using now service (this may take several minutes)');
+  const message = 'deploying app using now service';
+  spinner.start(`${message} (this may take several minutes)`);
   const args = process.argv.slice(2).join(' ');
   const meteorSettingsArg = meteorSettingsVar ? `-e METEOR_SETTINGS='${meteorSettingsVar}'` : '';
   const deployCommand = new Command(`cd .meteor/local/builds && now -e PORT=3000 ${args} ${meteorSettingsArg}`);
-  await deployCommand.run();
-  spinner.setMessage(`meteor app deployed :)`);
-  spinner.succeed();
+  const stdOut = await deployCommand.run();
+  const deployedAppUrl = stdOut.out.toString();
+  spinner.succeed(message);
+  return deployedAppUrl;
 };
 
 const cleanup = async () => {
-  spinner.start('cleaning up .meteor/local dir');
+  logger('cleaning up');
   const splitCommand = new Command('rm .meteor/local/builds/x* .meteor/local/builds/Dockerfile');
   await splitCommand.run();
+};
+
+const prepareForUpload = async () => {
+  spinner.start('preparing build for upload');
+  await createDockerfile();
+  await splitBuild();
+  await handleMeteorSettings();
   spinner.succeed();
 };
 
 const main = async () => {
   try {
     await buildMeteorApp();
-    await createDockerfile();
-    await splitBuild();
-    await handleMeteorSettings();
-    await deployMeteorApp();
+    await prepareForUpload();
+    const appUrl = await deployMeteorApp();
     await cleanup();
+    spinner.succeed(`meteor app deployed to ${appUrl}`);
   } catch (e) {
     spinner.fail();
     console.error(e); // eslint-disable-line no-console
