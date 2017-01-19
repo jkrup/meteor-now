@@ -31,7 +31,7 @@ $ now --login
 ## Deployment
 In your Meteor app directory, run `meteor-now` passing in environment variables according to `now` [docs](https://zeit.co/blog/environment-variables-secrets).
 ```
-$ meteor-now -e ROOT_URL=... MONGO_URL=...
+$ meteor-now -e ROOT_URL=... -e MONGO_URL=...
 ```
 
 You will receive a unique link to your deployed app
@@ -45,7 +45,7 @@ Currently there are two ways you can set the METEOR_SETTINGS environment variabl
 - Using `now secrets`
 ```
 $ now secrets add meteor-settings '{ "public": { "foo": "bar" }}'
-$ meteor-now -e METEOR_SETTINGS=@meteor-settings ROOT_URL=... MONGO_URL=...
+$ meteor-now -e METEOR_SETTINGS=@meteor-settings -e ROOT_URL=... -e MONGO_URL=...
 ```
 
 - Using `development.settings.json` and `production.settings.json`
