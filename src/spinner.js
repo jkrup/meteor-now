@@ -11,22 +11,25 @@ class Spinner {
     });
   }
   start(message = null) {
-    if (!isDebug()) {
-      if (message) { this.setMessage(message); }
-      this.spinner.start();
+    if (!isDebug()) { this.runAction('start', message); }
+  }
+  stop(message = null) {
+    if (!isDebug()) { this.runAction('stop', message); }
+  }
+  stopAndPersist(message = null) {
+    if (!isDebug()) { this.runAction('stopAndPersist', message); }
+  }
+  succeed(message = null) {
+    if (!isDebug()) { this.runAction('succeed', message); }
+  }
+  fail(message = null) {
+    if (!isDebug()) { this.runAction('fail', message); }
+  }
+  runAction(action, message) {
+    if (message) {
+      this.setMessage(message);
     }
-  }
-  stop() {
-    if (!isDebug()) { this.spinner.stop(); }
-  }
-  stopAndPersist() {
-    if (!isDebug()) { this.spinner.stopAndPersist(); }
-  }
-  succeed() {
-    if (!isDebug()) { this.spinner.succeed(); }
-  }
-  fail() {
-    if (!isDebug()) { this.spinner.fail(); }
+    this.spinner[action]();
   }
   setMessage(message) { this.spinner.text = `${prefix} - ${message}`; }
 }
