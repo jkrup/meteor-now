@@ -4,9 +4,9 @@
 
 `meteor-now` is a tool to let you instantly deploy your Meteor apps with [now](http://zeit.co/now) with one command.
 
-Just do `meteor-now -e ROOT_URL=http://example.com` and instantly deploy your meteor app like you could back in the good 'ol days of `meteor deploy`
+Just do `meteor-now -e ROOT_URL=... -e MONGO_URL=...` and instantly deploy your meteor app like you could back in the good 'ol days of `meteor deploy`.
 
-## Deployed Example App
+## Demo
 https://testmet-zioriusvcj.now.sh/
 
 # Usage
@@ -29,9 +29,9 @@ $ now --login
 ```
 
 ## Deployment
-In your Meteor app directory, run `meteor-now` passing in environment variables according to `now` [docs](https://zeit.co/blog/environment-variables-secrets)
+In your Meteor app directory, run `meteor-now` passing in environment variables according to `now` [docs](https://zeit.co/blog/environment-variables-secrets).
 ```
-$ meteor-now -e ROOT_URL=http://example.com
+$ meteor-now -e ROOT_URL=... MONGO_URL=...
 ```
 
 You will receive a unique link to your deployed app
@@ -45,7 +45,7 @@ Currently there are two ways you can set the METEOR_SETTINGS environment variabl
 - Using `now secrets`
 ```
 $ now secrets add meteor-settings '{ "public": { "foo": "bar" }}'
-meteor-now -e METEOR_SETTINGS=@meteor-settings
+$ meteor-now -e METEOR_SETTINGS=@meteor-settings ROOT_URL=... MONGO_URL=...
 ```
 
 - Using `development.settings.json` and `production.settings.json`
