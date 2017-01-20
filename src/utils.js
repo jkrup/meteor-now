@@ -16,7 +16,7 @@ const readFile = async (path) => {
     fs.readFile(path, { encoding: 'utf8' }, (err, data) => {
       if (err) {
         logger(`could not read ${path}`);
-        resolve(null)
+        resolve(null);
       } else {
         resolve(data);
       }
@@ -35,6 +35,18 @@ const getNodeEnv = () => {
     // ignore error, nodeEnv will be 'development'
   }
   return env;
+};
+
+const didPassInMongoUrl = () => {
+  const args = minimist(process.argv.slice(2));
+  try {
+    args.e
+      .filter(arg => arg.split('=')[0] === 'MONGO_URL')[0].split('=')[1];
+  } catch (e) {
+    // MONGO_URL argument was not passed
+    return false;
+  }
+  return true;
 };
 
 const didPassInMeteorSettings = () => {
@@ -86,6 +98,7 @@ export {
   readFile,
   getNodeEnv,
   didPassInMeteorSettings,
+  didPassInMongoUrl,
   getArgs,
   isDebug,
   getBuildName,
