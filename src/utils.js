@@ -49,6 +49,18 @@ const didPassInMongoUrl = () => {
   return true;
 };
 
+const didPassInRootUrl = () => {
+  const args = minimist(process.argv.slice(2));
+  try {
+    args.e
+      .filter(arg => arg.split('=')[0] === 'ROOT_URL')[0].split('=')[1];
+  } catch (e) {
+    // ROOT_URL argument was not passed
+    return false;
+  }
+  return true;
+};
+
 const didPassInMeteorSettings = () => {
   const args = minimist(process.argv.slice(2));
   try {
@@ -99,6 +111,7 @@ export {
   getNodeEnv,
   didPassInMeteorSettings,
   didPassInMongoUrl,
+  didPassInRootUrl,
   getArgs,
   isDebug,
   getBuildName,
