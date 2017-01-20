@@ -5,7 +5,7 @@ import spinner from './spinner';
 import Command from './command';
 import logger from './logger';
 import { dockerfile } from './dockerfile';
-import { readFile, isStringJson, getNodeEnv, didPassInMeteorSettings, didPassInMongoUrl } from './utils';
+import { readFile, isStringJson, getNodeEnv, didPassInMeteorSettings, didPassInMongoUrl, didPassInRootUrl } from './utils';
 
 let meteorSettingsVar;
 
@@ -19,7 +19,8 @@ const buildMeteorApp = async () => {
 
 
 const createDockerfile = async () => {
-  const dockerfileContents = dockerfile.getContents(!didPassInMongoUrl);
+  const dockerfileContents = dockerfile.getContents(didPassInMongoUrl());
+  logger('creating Dockerfile');
   return new Promise((resolve, reject) => {
     fs.writeFile('.meteor/local/builds/Dockerfile', dockerfileContents, (err) => {
       if (err) {
@@ -30,7 +31,31 @@ const createDockerfile = async () => {
   });
 };
 
+const createSupervisorFile = async () => {
+  logger('creating supervis')
+  return new Promise((resolve, reject) => {
+    fs.writeFile('.meteor/local/builds/supervisord.conf',
+    `
+[supervisord]
+nodaemon=true
+loglevel=debug
+
+[program:mongo]
+command=mongod
+
+[program:node]
+command=node "/usr/src/app/bundle/main.js"`, (err) => {
+      if (err) {
+        reject(err);
+      }
+      resolve();
+    });
+  });
+
+}
+
 const splitBuild = async () => {
+  logger('splitting bundle');
   const splitCommand = new Command(`split -b 999999 .meteor/local/builds/${dockerfile.buildzip} .meteor/local/builds/x && rm .meteor/local/builds/${dockerfile.buildzip}`);
   await splitCommand.run();
 };
@@ -53,15 +78,16 @@ const handleMeteorSettings = async () => {
       logger('no settings file found');
     }
   }
-  spinner.succeed();
 };
 
 const deployMeteorApp = async () => {
-  const message = 'deploying app using now service';
+  const message = 'deploying app';
   spinner.start(`${message} (this may take several minutes)`);
   const args = process.argv.slice(2).join(' ');
   const meteorSettingsArg = meteorSettingsVar ? `-e METEOR_SETTINGS='${meteorSettingsVar}'` : '';
-  const deployCommand = new Command(`cd .meteor/local/builds && now -e PORT=3000 ${args} ${meteorSettingsArg}`);
+  const mongoUrl = !didPassInMongoUrl() ? '-e MONGO_URL=mongodb://127.0.0.1:27017' : '';
+  const rootUrl = !didPassInRootUrl() ? '-e ROOT_URL=http://localhost.com' : '';
+  const deployCommand = new Command(`cd .meteor/local/builds && now -e PORT=3000 ${mongoUrl} ${rootUrl} ${args} ${meteorSettingsArg}`);
   const stdOut = await deployCommand.run();
   const deployedAppUrl = stdOut.out.toString();
   spinner.succeed(message);
@@ -75,8 +101,11 @@ const cleanup = async () => {
 };
 
 const prepareForUpload = async () => {
-  spinner.start('preparing build for upload');
+  spinner.start('preparing build for deployment');
   await createDockerfile();
+  if (!didPassInMongoUrl()) {
+    await createSupervisorFile();
+  }
   await splitBuild();
   await handleMeteorSettings();
   spinner.succeed();
@@ -84,10 +113,10 @@ const prepareForUpload = async () => {
 
 const main = async () => {
   try {
+    await cleanup();
     await buildMeteorApp();
     await prepareForUpload();
     const appUrl = await deployMeteorApp();
-    await cleanup();
     spinner.succeed(`meteor app deployed to ${appUrl}`);
   } catch (e) {
     spinner.fail();
