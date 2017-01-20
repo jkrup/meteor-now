@@ -1,21 +1,28 @@
 import Spawner from 'promise-spawner';
 import logger from './logger';
+import { isDebug } from './utils';
 
 export default class Command {
-  constructor(command) {
+  constructor(command, inheritIo = isDebug()) {
     this.command = command;
-    const modifiers = {
-      out(d) { return d; },
-      err: 'this is an error: ',
-    };
+    const modifiers = {};
+
     this.spawner = new Spawner(modifiers, {
-      stdio: 'inherit',
+      stdio: inheritIo ? 'inherit' : 'pipe',
     });
-    this.spawner.out.pipe(process.stdout);
-    this.spawner.err.pipe(process.stdout);
+
+    if (isDebug()) {
+      this.spawner.out.pipe(process.stdout);
+      this.spawner.err.pipe(process.stderr);
+    }
   }
   run = () => {
     logger(`running command: ${this.command}`);
+    return new Promise((resolve, reject) => {
+      this.spawner.spawn(this.command).then(function(code) {
+        resolve(this.data);
+      })
+    });
     return this.spawner.spawn(this.command);
   }
 }
