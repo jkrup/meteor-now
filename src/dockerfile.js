@@ -18,9 +18,23 @@ class Dockerfile {
     this.buildzip = `${this.builddir}.tar.gz`;
   }
 
-  getContents(includeMongoDB) {
-    if (includeMongoDB) {
+  getContents(includedMongoDB) {
+    if (includedMongoDB) {
       return `
+FROM ${this.dockerImage}
+ENV NPM_CONFIG_LOGLEVEL warn
+LABEL name="${this.builddir}"
+COPY . .
+RUN cat x* > bundle.tar.gz
+RUN tar -xzf bundle.tar.gz
+WORKDIR bundle/programs/server
+RUN npm install
+WORKDIR ../../
+EXPOSE 3000
+CMD ["node", "main.js"]
+    `;
+    }
+    return `
 FROM ${this.dockerImage}
 
 RUN apt-get update
@@ -44,20 +58,6 @@ COPY supervisord.conf /etc/supervisor/supervisord.conf
 EXPOSE 3000
 CMD ["supervisord"]
 `;
-    }
-    return `
-FROM ${this.dockerImage}
-ENV NPM_CONFIG_LOGLEVEL warn
-LABEL name="${this.builddir}"
-COPY . .
-RUN cat x* > bundle.tar.gz
-RUN tar -xzf bundle.tar.gz
-WORKDIR bundle/programs/server
-RUN npm install
-WORKDIR ../../
-EXPOSE 3000
-CMD ["node", "main.js"]
-    `;
   }
 }
 

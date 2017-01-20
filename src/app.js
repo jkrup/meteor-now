@@ -5,7 +5,7 @@ import spinner from './spinner';
 import Command from './command';
 import logger from './logger';
 import { dockerfile } from './dockerfile';
-import { readFile, isStringJson, getNodeEnv, didPassInMeteorSettings } from './utils';
+import { readFile, isStringJson, getNodeEnv, didPassInMeteorSettings, didPassInMongoUrl } from './utils';
 
 let meteorSettingsVar;
 
@@ -17,7 +17,7 @@ const buildMeteorApp = async () => {
 };
 
 const createDockerfile = async () => {
-  const dockerfileContents = dockerfile.getContents();
+  const dockerfileContents = dockerfile.getContents(!didPassInMongoUrl);
   spinner.start('creating Dockerfile');
   return new Promise((resolve, reject) => {
     fs.writeFile('.meteor/local/builds/Dockerfile', dockerfileContents, (err) => {
