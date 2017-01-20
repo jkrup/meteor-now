@@ -59,6 +59,19 @@ EXPOSE 3000
 CMD ["supervisord"]
 `;
   }
+  getSupervisor() {
+    return `
+[supervisord]
+nodaemon=true
+loglevel=debug
+
+[program:mongo]
+command=mongod
+
+[program:node]
+command=node "/usr/src/app/bundle/main.js"
+    `;
+  }
 }
 
 export const dockerfile = new Dockerfile();
