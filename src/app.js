@@ -11,7 +11,7 @@ let meteorSettingsVar;
 
 const buildMeteorApp = async () => {
   const message = 'building meteor app';
-  spinner.start(`${message} (this may take several minutes)`);
+  spinner.start(`${message} (this can take several minutes)`);
   const buildCommand = new Command('meteor build .meteor/local/builds --architecture=os.linux.x86_64');
   await buildCommand.run();
   spinner.succeed(message);
@@ -32,26 +32,15 @@ const createDockerfile = async () => {
 };
 
 const createSupervisorFile = async () => {
-  logger('creating supervis')
+  logger('creating supervisor');
   return new Promise((resolve, reject) => {
-    fs.writeFile('.meteor/local/builds/supervisord.conf',
-    `
-[supervisord]
-nodaemon=true
-loglevel=debug
-
-[program:mongo]
-command=mongod
-
-[program:node]
-command=node "/usr/src/app/bundle/main.js"`, (err) => {
+    fs.writeFile('.meteor/local/builds/supervisord.conf', dockerfile.getSupervisor(), (err) => {
       if (err) {
         reject(err);
       }
       resolve();
     });
   });
-
 }
 
 const splitBuild = async () => {
@@ -81,8 +70,8 @@ const handleMeteorSettings = async () => {
 };
 
 const deployMeteorApp = async () => {
-  const message = 'deploying app';
-  spinner.start(`${message} (this may take several minutes)`);
+  const message = 'deploying build';
+  spinner.start(`${message} (this can take several minutes)`);
   const args = process.argv.slice(2).join(' ');
   const meteorSettingsArg = meteorSettingsVar ? `-e METEOR_SETTINGS='${meteorSettingsVar}'` : '';
   const mongoUrl = !didPassInMongoUrl() ? '-e MONGO_URL=mongodb://127.0.0.1:27017' : '';
@@ -101,7 +90,7 @@ const cleanup = async () => {
 };
 
 const prepareForUpload = async () => {
-  spinner.start('preparing build for deployment');
+  spinner.start('preparing build');
   await createDockerfile();
   if (!didPassInMongoUrl()) {
     await createSupervisorFile();
@@ -113,10 +102,10 @@ const prepareForUpload = async () => {
 
 const main = async () => {
   try {
-    await cleanup();
     await buildMeteorApp();
     await prepareForUpload();
     const appUrl = await deployMeteorApp();
+    await cleanup();
     spinner.succeed(`meteor app deployed to ${appUrl}`);
   } catch (e) {
     spinner.fail();
