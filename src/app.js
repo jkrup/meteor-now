@@ -12,7 +12,7 @@ let meteorSettingsVar;
 const buildMeteorApp = async () => {
   const message = 'building meteor app';
   spinner.start(`${message} (this can take several minutes)`);
-  const buildCommand = new Command('meteor build .meteor/local/builds --architecture=os.linux.x86_64');
+  const buildCommand = new Command('meteor build .meteor/local/builds --server-only --architecture=os.linux.x86_64');
   await buildCommand.run();
   spinner.succeed(message);
 };

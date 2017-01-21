@@ -26,7 +26,7 @@ const readFile = async (path) => {
 
 const writeFile = async (path, contents) => {
   return new Promise((resolve) => {
-    fs.writefile(path, contents, (err) => {
+    fs.writeFile(path, contents, (err) => {
       if (err) {
         reject(err);
       }
