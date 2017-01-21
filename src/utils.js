@@ -24,6 +24,17 @@ const readFile = async (path) => {
   });
 };
 
+const writeFile = async (path, contents) => {
+  return new Promise((resolve) => {
+    fs.writefile(path, contents, (err) => {
+      if (err) {
+        reject(err);
+      }
+      resolve();
+    });
+  });
+};
+
 const getNodeEnv = () => {
   const args = minimist(process.argv.slice(2));
   let env = 'development';
@@ -108,6 +119,7 @@ const getBuildName = () => {
 export {
   isStringJson,
   readFile,
+  writeFile,
   getNodeEnv,
   didPassInMeteorSettings,
   didPassInMongoUrl,

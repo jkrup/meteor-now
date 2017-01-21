@@ -5,7 +5,7 @@ import spinner from './spinner';
 import Command from './command';
 import logger from './logger';
 import { dockerfile } from './dockerfile';
-import { readFile, isStringJson, getNodeEnv, didPassInMeteorSettings, didPassInMongoUrl, didPassInRootUrl } from './utils';
+import { readFile, writeFile, isStringJson, getNodeEnv, didPassInMeteorSettings, didPassInMongoUrl, didPassInRootUrl } from './utils';
 
 let meteorSettingsVar;
 
@@ -21,27 +21,13 @@ const buildMeteorApp = async () => {
 const createDockerfile = async () => {
   const dockerfileContents = dockerfile.getContents(didPassInMongoUrl());
   logger('creating Dockerfile');
-  return new Promise((resolve, reject) => {
-    fs.writeFile('.meteor/local/builds/Dockerfile', dockerfileContents, (err) => {
-      if (err) {
-        reject(err);
-      }
-      resolve();
-    });
-  });
+  await writeFile('.meteor/local/builds/Dockerfile', dockerfileContents);
 };
 
 const createSupervisorFile = async () => {
   logger('creating supervisor');
-  return new Promise((resolve, reject) => {
-    fs.writeFile('.meteor/local/builds/supervisord.conf', dockerfile.getSupervisor(), (err) => {
-      if (err) {
-        reject(err);
-      }
-      resolve();
-    });
-  });
-}
+  await writeFile('.meteor/local/builds/supervisord.conf', dockerfile.getSupervisor());
+};
 
 const splitBuild = async () => {
   logger('splitting bundle');
