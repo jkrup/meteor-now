@@ -59,7 +59,7 @@ const deployMeteorApp = async () => {
   const message = 'deploying build';
   let mongoUrl = '';
   if (!didPassParam('MONGO_URL')) {
-    console.log(colors.yellow('WARNING: Did not pass a MONGO_URL. Bundling a NON-PRODUCTION version of MongoDB with your application. Read about the limitations here: https://github.com/mazlix/meteor-now#user-content-full-deploy-with-mongodb')); // eslint-disable-line no-console
+    console.log(colors.yellow('WARNING: Did not pass a MONGO_URL. Bundling a NON-PRODUCTION version of MongoDB with your application. Read about the limitations here: https://git.io/vM72E')); // eslint-disable-line no-console
     mongoUrl = '-e MONGO_URL=mongodb://127.0.0.1:27017';
   }
   spinner.start(`${message} (this can take several minutes)`);
