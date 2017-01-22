@@ -7,7 +7,7 @@
 </p>
 
 ## Demo
-https://meteor-now-site-icuqskjceu.now.sh
+[https://meteor-test-msrbsvslpz.now.sh](https://meteor-test-msrbsvslpz.now.sh)
 
 # Install
 Install the `now` and `meteor-now` packages:
