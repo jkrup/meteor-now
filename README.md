@@ -1,4 +1,4 @@
-# Meteor Now [![npm version](https://badge.fury.io/js/meteor-now.svg)](https://badge.fury.io/js/meteor-now)
+# Meteor Now [![CircleCI](https://circleci.com/gh/mazlix/meteor-now.svg?style=svg)](https://circleci.com/gh/mazlix/meteor-now) [![npm version](https://badge.fury.io/js/meteor-now.svg)](https://badge.fury.io/js/meteor-now)
 
 `meteor-now` is a tool to let you instantly deploy your Meteor apps with one command using ZEIT's [▲now](http://zeit.co/now) service. Just run `meteor-now` and instantly deploy your Meteor app like you could back in the good 'ol days of `meteor deploy`.
 
