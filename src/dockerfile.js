@@ -12,6 +12,10 @@ class Dockerfile {
       ? 'nodesource/jessie:0.10.43'
       : 'node:boron';
 
+    this.serverOnly = (parseInt(microVersion, 10) < 3)
+      ? ''
+      : '--server-only';
+
     // Determine bundle name (it's based on meteor directory)
     const pwd = process.env.PWD;
     this.builddir = pwd.split('/')[pwd.split('/').length - 1];
