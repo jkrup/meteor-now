@@ -35,56 +35,8 @@ const writeFile = async (path, contents) => {
   });
 };
 
-const getNodeEnv = () => {
-  const args = minimist(process.argv.slice(2));
-  let env = 'development';
-  try {
-    env = args.e
-      .filter(arg => arg.split('=')[0] === 'NODE_ENV')[0].split('=')[1];
-  } catch (e) {
-    // NODE_ENV was not passed in (-e NODE_ENV=production)
-    // ignore error, nodeEnv will be 'development'
-  }
-  return env;
-};
-
-const didPassInMongoUrl = () => {
-  const args = minimist(process.argv.slice(2));
-  try {
-    args.e
-      .filter(arg => arg.split('=')[0] === 'MONGO_URL')[0].split('=')[1];
-  } catch (e) {
-    // MONGO_URL argument was not passed
-    return false;
-  }
-  return true;
-};
-
-const didPassInRootUrl = () => {
-  const args = minimist(process.argv.slice(2));
-  try {
-    args.e
-      .filter(arg => arg.split('=')[0] === 'ROOT_URL')[0].split('=')[1];
-  } catch (e) {
-    // ROOT_URL argument was not passed
-    return false;
-  }
-  return true;
-};
-
-const didPassInMeteorSettings = () => {
-  const args = minimist(process.argv.slice(2));
-  try {
-    // TODO possibly better way of doing this
-    args.e
-      .filter(arg => arg.split('=')[0] === 'METEOR_SETTINGS')[0].split('=')[1];
-  } catch (e) {
-    // METEOR_SETTINGS argument was not passed
-    return false;
-  }
-  return true;
-};
-
+// Converts passed arguments into an object such that
+// -e KEY=VALUE -e KEY=VAlUE --> {e: [[KEY, VALUE], [KEY, VALUE]]}
 const getArgs = () => {
   const args = minimist(process.argv.slice(2));
 
@@ -97,17 +49,32 @@ const getArgs = () => {
   // and array if multiple are passed. This handles it so that getArgs() always returns
   // array for args.e regardless if one or more environment variables were passed
   let parsedEnvironmentArguments = [];
+
   const splitEnvironmentArgument = arg => arg.split('=');
-  if (args.e && args.e instanceof Array) {
+
+  if (args.e instanceof Array) {
     parsedEnvironmentArguments = args.e.map(arg => splitEnvironmentArgument(arg));
   } else {
-    parsedEnvironmentArguments = splitEnvironmentArgument(args.e);
+    parsedEnvironmentArguments = [splitEnvironmentArgument(args.e)];
   }
   return {
     ...args,
     e: parsedEnvironmentArguments,
   };
 };
+
+const getParam = (param) => {
+  const eArgs = getArgs().e || [];
+  const paramObject = eArgs.find(arg => (arg[0] === param));
+  return paramObject && paramObject[1];
+};
+
+const didPassParam = (param) => {
+  const eArgs = getArgs().e || [];
+  return !!eArgs.find(arg => (arg[0] === param));
+};
+
+const getNodeEnv = () => (getParam('NODE_ENV') || 'development');
 
 const isDebug = () => getArgs().d === true;
 
@@ -121,9 +88,7 @@ export {
   readFile,
   writeFile,
   getNodeEnv,
-  didPassInMeteorSettings,
-  didPassInMongoUrl,
-  didPassInRootUrl,
+  didPassParam,
   getArgs,
   isDebug,
   getBuildName,

@@ -13,10 +13,11 @@
     "prepublish": "webpack",
     "publish": "webpack",
     "build:watch": "webpack --watch",
-    "eslint": "eslint ."
+    "eslint": "eslint .",
+    "test": "jest"
   },
   "dependencies": {
-    "babel-polyfill": "^6.20.0",
+    "babel-polyfill": "^6.22.0",
     "cli-spinners": "^1.0.0",
     "minimist": "^1.2.0",
     "ora": "^1.0.0",
@@ -24,6 +25,7 @@
   },
   "devDependencies": {
     "babel-core": "^6.21.0",
+    "babel-jest": "^18.0.0",
     "babel-loader": "^6.2.10",
     "babel-preset-latest": "^6.16.0",
     "babel-preset-stage-2": "^6.18.0",
@@ -32,6 +34,8 @@
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^2.2.3",
     "eslint-plugin-react": "^6.6.0",
+    "jest": "^18.1.0",
+    "mocha": "^3.2.0",
     "webpack": "^1.14.0"
   }
 }

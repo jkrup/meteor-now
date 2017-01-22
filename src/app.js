@@ -5,7 +5,7 @@ import spinner from './spinner';
 import Command from './command';
 import logger from './logger';
 import { dockerfile } from './dockerfile';
-import { readFile, writeFile, isStringJson, getNodeEnv, didPassInMeteorSettings, didPassInMongoUrl, didPassInRootUrl } from './utils';
+import { readFile, writeFile, isStringJson, getNodeEnv, didPassParam } from './utils';
 
 let meteorSettingsVar;
 
@@ -19,7 +19,7 @@ const buildMeteorApp = async () => {
 
 
 const createDockerfile = async () => {
-  const dockerfileContents = dockerfile.getContents(didPassInMongoUrl());
+  const dockerfileContents = dockerfile.getContents(didPassParam('MONGO_URL'));
   logger('creating Dockerfile');
   await writeFile('.meteor/local/builds/Dockerfile', dockerfileContents);
 };
@@ -36,7 +36,7 @@ const splitBuild = async () => {
 };
 
 const handleMeteorSettings = async () => {
-  if (!didPassInMeteorSettings()) {
+  if (!didPassParam('METEOR_SETTINGS')) {
     const env = getNodeEnv();
     const settingsFile = `${env}.settings.json`;
     logger(`looking for meteor settings file ${settingsFile} in root of project`);
@@ -60,8 +60,8 @@ const deployMeteorApp = async () => {
   spinner.start(`${message} (this can take several minutes)`);
   const args = process.argv.slice(2).join(' ');
   const meteorSettingsArg = meteorSettingsVar ? `-e METEOR_SETTINGS='${meteorSettingsVar}'` : '';
-  const mongoUrl = !didPassInMongoUrl() ? '-e MONGO_URL=mongodb://127.0.0.1:27017' : '';
-  const rootUrl = !didPassInRootUrl() ? '-e ROOT_URL=http://localhost.com' : '';
+  const mongoUrl = !didPassParam('MONGO_URL') ? '-e MONGO_URL=mongodb://127.0.0.1:27017' : '';
+  const rootUrl = !didPassParam('ROOT_URL') ? '-e ROOT_URL=http://localhost.com' : '';
   const deployCommand = new Command(`cd .meteor/local/builds && now -e PORT=3000 ${mongoUrl} ${rootUrl} ${args} ${meteorSettingsArg}`);
   const stdOut = await deployCommand.run();
   const deployedAppUrl = stdOut.out.toString();
@@ -78,7 +78,7 @@ const cleanup = async () => {
 const prepareForUpload = async () => {
   spinner.start('preparing build');
   await createDockerfile();
-  if (!didPassInMongoUrl()) {
+  if (!didPassParam('MONGO_URL')) {
     await createSupervisorFile();
   }
   await splitBuild();
@@ -92,7 +92,7 @@ const main = async () => {
     await prepareForUpload();
     const appUrl = await deployMeteorApp();
     await cleanup();
-    spinner.succeed(`meteor app deployed to ${appUrl}`);
+    spinner.succeed(`meteor app deployed to ${appUrl.split(',')[0]}`);
   } catch (e) {
     spinner.fail();
     console.error(e); // eslint-disable-line no-console

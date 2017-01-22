@@ -1,6 +1,6 @@
 ![METEOR-NOW](assets/zeit.meteor.png "ZEIT + METEOR")
 
-# Meteor Now
+# Meteor Now [![npm version](https://badge.fury.io/js/meteor-now.svg)](https://badge.fury.io/js/meteor-now)
 
 `meteor-now` is a tool to let you instantly deploy your Meteor apps with [now](http://zeit.co/now) with one command.
 
