@@ -13,8 +13,9 @@
     "prepublish": "webpack",
     "publish": "webpack",
     "build:watch": "webpack --watch",
-    "eslint": "eslint .",
-    "test": "jest"
+    "lint": "eslint src",
+    "jest": "jest",
+    "test": "npm run lint && jest"
   },
   "dependencies": {
     "babel-polyfill": "^6.22.0",

@@ -1,6 +1,5 @@
 // required for async/await to work
 import 'babel-polyfill';
-import fs from 'fs';
 import spinner from './spinner';
 import Command from './command';
 import logger from './logger';

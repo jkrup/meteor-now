@@ -16,13 +16,12 @@ export default class Command {
       this.spawner.err.pipe(process.stderr);
     }
   }
-  run = () => {
+  run() {
     logger(`running command: ${this.command}`);
-    return new Promise((resolve, reject) => {
-      this.spawner.spawn(this.command).then(function(code) {
+    return new Promise((resolve) => {
+      this.spawner.spawn(this.command).then(function () {
         resolve(this.data);
-      })
+      });
     });
-    return this.spawner.spawn(this.command);
   }
 }

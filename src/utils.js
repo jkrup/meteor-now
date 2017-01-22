@@ -11,29 +11,25 @@ const isStringJson = (string) => {
   return true;
 };
 
-const readFile = async (path) => {
-  return new Promise((resolve) => {
-    fs.readFile(path, { encoding: 'utf8' }, (err, data) => {
-      if (err) {
-        logger(`could not read ${path}`);
-        resolve(null);
-      } else {
-        resolve(data);
-      }
-    });
+const readFile = async path => new Promise((resolve) => {
+  fs.readFile(path, { encoding: 'utf8' }, (err, data) => {
+    if (err) {
+      logger(`could not read ${path}`);
+      resolve(null);
+    } else {
+      resolve(data);
+    }
   });
-};
+});
 
-const writeFile = async (path, contents) => {
-  return new Promise((resolve) => {
-    fs.writeFile(path, contents, (err) => {
-      if (err) {
-        reject(err);
-      }
-      resolve();
-    });
+const writeFile = async (path, contents) => new Promise((resolve, reject) => {
+  fs.writeFile(path, contents, (err) => {
+    if (err) {
+      reject(err);
+    }
+    resolve();
   });
-};
+});
 
 // Converts passed arguments into an object such that
 // -e KEY=VALUE -e KEY=VAlUE --> {e: [[KEY, VALUE], [KEY, VALUE]]}

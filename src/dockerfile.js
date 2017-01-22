@@ -59,7 +59,7 @@ EXPOSE 3000
 CMD ["supervisord"]
 `;
   }
-  getSupervisor() {
+  getSupervisor() { // eslint-disable-line class-methods-use-this
     return `
 [supervisord]
 nodaemon=true
@@ -74,4 +74,4 @@ command=node "/usr/src/app/bundle/main.js"
   }
 }
 
-export const dockerfile = new Dockerfile();
+export const dockerfile = new Dockerfile(); // eslint-disable-line import/prefer-default-export
