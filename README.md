@@ -1,9 +1,10 @@
+# Meteor Now [![npm version](https://badge.fury.io/js/meteor-now.svg)](https://badge.fury.io/js/meteor-now)
+
+`meteor-now` is a tool to let you instantly deploy your Meteor apps with one command using ZEIT's [▲now](http://zeit.co/now) service. Just run `meteor-now` and instantly deploy your Meteor app like you could back in the good 'ol days of `meteor deploy`.
+
 <p align="center">
   <img src="assets/meteor-now-intro.gif">
 </p>
-# Meteor Now [![npm version](https://badge.fury.io/js/meteor-now.svg)](https://badge.fury.io/js/meteor-now)
-
-`meteor-now` is a tool to let you instantly deploy your Meteor apps with one command using ZEIT's [now](http://zeit.co/now) service. Just run `meteor-now` and instantly deploy your Meteor app like you could back in the good 'ol days of `meteor deploy`.
 
 ## Demo
 https://meteor-now-site-icuqskjceu.now.sh
@@ -38,7 +39,7 @@ In your Meteor app directory, run `meteor-now`.
 
 # How
 ![METEOR-NOW](assets/zeit-meteor.png "METEOR-NOW")
-`meteor-now` use ZEITs [now](https://zeit.co/now) service to deploy the Meteor app in a container. Please refer to their [documentation and support](https://github.com/zeit/) for hosting related details.
+`meteor-now` use ZEITs [▲now](https://zeit.co/now) service to deploy the Meteor app in a container. Please refer to their [documentation and support](https://github.com/zeit/) for hosting related details.
 
 # Additional Info
 ## Full deploy with MongoDB
