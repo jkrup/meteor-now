@@ -1,12 +1,12 @@
-![METEOR-NOW](assets/meteor-now-intro.gif "METEOR-NOW")
-
+<p align="center">
+  <img src="assets/meteor-now-intro.gif">
+</p>
 # Meteor Now [![npm version](https://badge.fury.io/js/meteor-now.svg)](https://badge.fury.io/js/meteor-now)
 
 `meteor-now` is a tool to let you instantly deploy your Meteor apps with one command using ZEIT's [now](http://zeit.co/now) service. Just run `meteor-now` and instantly deploy your Meteor app like you could back in the good 'ol days of `meteor deploy`.
 
 ## Demo
 https://meteor-now-site-icuqskjceu.now.sh
-![METEOR-NOW](assets/meteor-test.gif "METEOR-DEMO")
 
 # Install
 Install the `now` and `meteor-now` packages:
@@ -63,10 +63,10 @@ It will either look for `development.settings.json` or `production.settings.json
 Note that `meteor-now` by default looks for `development.settings.json` unless otherwise specified by `-e NODE_ENV` or `-e METEOR_SETTINGS`.
 
 ## Debug
-In order to see detailed deployments logs as they happen, pass the `-d` when you deploy.
+In order to see detailed deployment logs as they happen, pass the `-d` when you deploy.
 
 # Authors
 <a href="https://www.github.com/mazlix"><img src="https://avatars2.githubusercontent.com/u/519731?v=3&s=460" alt="Justin Avatar" height="100" width="100"></a>|<a href="https://www.github.com/purplecones"><img src="https://avatars1.githubusercontent.com/u/136654?v=3&s=460" height="100" width="100" alt="Mirza Avatar"></a>
--|-
+---|---
 Justin Krup|Mirza Joldic
-[@mazlix](https://www.github.com/mazlix) |[@purplecones](https://www.github.com/purplecones)
+[@mazlix](https://www.github.com/mazlix)|[@purplecones](https://www.github.com/purplecones)
