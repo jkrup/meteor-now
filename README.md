@@ -28,7 +28,11 @@ $ now --login
 ```
 
 # Usage
+
+## Deploying for Development / Testing
+
 In your Meteor app directory, run `meteor-now`.
+
 ```
 ~/my-meteor-app/ $ meteor-now
 ✔ [METEOR-NOW] - building meteor app
@@ -36,6 +40,22 @@ In your Meteor app directory, run `meteor-now`.
 ✔ [METEOR-NOW] - deploying build
 ✔ [METEOR-NOW] - meteor app deployed to https://meteor-test-msrbsvslpz.now.sh
 ```
+
+## Deploying for Production
+
+There are a few things you'll want to know before using `meteor-now` in production. And your deploy command will probably look more like the following:
+
+```
+meteor-now -e MONGO_URL=mongodb://<username>:<pass>@.... -e ROOT_URL=https://mydomain.com -e NODE_ENV=production`
+```
+
+If your app uses MongoDB at all you will want to specify a `-e MONGO_URL=` for persistent storage of data. [Mlab](http://mlab.com) has a great free sandbox tier, but also not recommended for production (you will probably want to pay at some point).
+
+You should also have a paid account with [▲now](https://zeit.co/now) so that you can specify a custom domain name, and have more than 1GB of bandwidth/mo.
+
+You will also likely want to specify a `-e ROOT_URL=` [http://stackoverflow.com/questions/24046186/meteor-what-is-the-purpose-of-root-url-and-to-what-should-it-be-defined](http://stackoverflow.com/questions/24046186/meteor-what-is-the-purpose-of-root-url-and-to-what-should-it-be-defined)
+
+Finally you should have a `production.settings.json` in your project directory if you are using `METEOR_SETTINGS` (i.e. passing in `--settings`) and use `-e NODE_ENV=production` to tell `meteor-now` to use that.
 
 # How
 ![METEOR-NOW](assets/zeit-meteor.png "METEOR-NOW")
@@ -52,6 +72,7 @@ To not have this issue, spin up your own MongoDB instance and pass the `-e MONGO
 Currently there are two ways you can set the METEOR_SETTINGS environment variable in your deployments
 
 - Using `now secrets`
+
 ```
 $ now secrets add meteor-settings '{ "public": { "foo": "bar" }}'
 $ meteor-now -e METEOR_SETTINGS=@meteor-settings -e MONGO_URL=...
