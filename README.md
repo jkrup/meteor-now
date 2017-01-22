@@ -3,7 +3,7 @@
 `meteor-now` is a tool to let you instantly deploy your Meteor apps with one command using ZEIT's [▲now](http://zeit.co/now) service. Just run `meteor-now` and instantly deploy your Meteor app like you could back in the good 'ol days of `meteor deploy`.
 
 <p align="center">
-  <img src="assets/meteor-now-intro.gif">
+  <img src="https://github.com/mazlix/meteor-now/raw/master/assets/meteor-now-intro.gif">
 </p>
 
 ## Demo
