@@ -79,6 +79,20 @@ const getBuildName = () => {
   return pwd.split('/')[pwd.split('/').length - 1];
 };
 
+const getDependencies = () => {
+  const args = minimist(process.argv.slice(2));
+  let dependencies = [];
+  if (!args.dependencies) {
+    return false;
+  }
+  if (args.dependencies instanceof Array) {
+    dependencies = args.dependencies;
+  } else {
+    dependencies = [args.dependencies];
+  }
+  return dependencies;
+};
+
 export {
   isStringJson,
   readFile,
@@ -88,4 +102,5 @@ export {
   getArgs,
   isDebug,
   getBuildName,
+  getDependencies,
 };

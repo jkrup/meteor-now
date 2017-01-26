@@ -1,4 +1,5 @@
 import fs from 'fs';
+import { getDependencies } from './utils';
 
 class Dockerfile {
   constructor() {
@@ -8,6 +9,8 @@ class Dockerfile {
     });
     const version = data.match(/METEOR@(.*)\n/)[1];
     const microVersion = version.split('.')[1];
+
+    this.dependencies = getDependencies();
     this.dockerImage = (parseInt(microVersion, 10) < 4)
       ? 'nodesource/jessie:0.10.43'
       : 'node:boron';
@@ -22,10 +25,21 @@ class Dockerfile {
     this.buildzip = `${this.builddir}.tar.gz`;
   }
 
+  getDependencyInstallScripts() {
+    if (!this.dependencies) {
+      return '';
+    }
+    return this.dependencies.reduce((accumulator, currentValue) =>
+      `${accumulator}RUN apt-get install ${currentValue}\n`,
+      '');
+  }
+
   getContents(includedMongoDB) {
+    const dependencies = this.getDependencyInstallScripts();
     if (includedMongoDB) {
       return `
 FROM ${this.dockerImage}
+${dependencies}
 ENV NPM_CONFIG_LOGLEVEL warn
 LABEL name="${this.builddir}"
 COPY . .
@@ -78,4 +92,5 @@ command=node "/usr/src/app/bundle/main.js"
   }
 }
 
-export const dockerfile = new Dockerfile(); // eslint-disable-line import/prefer-default-export
+export const dockerfile = new Dockerfile();
+export default Dockerfile;
