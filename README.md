@@ -87,6 +87,58 @@ Note that `meteor-now` by default looks for `development.settings.json` unless o
 ## Debug
 In order to see detailed deployment logs as they happen, pass the `-d` when you deploy.
 
+## FAQ
+### Can I use this in production?
+Sort of! Now supports dynamic autoscaling of apps, but unfortunately at the moment they do not support sticky sessions, so some of your users may have issues of being randomly logged out and losing Session data.
+You should read all the caveats related to `now` if you are not paying for the monthly plan– You only get 1GB of bandwidth per month, and also your source files are made (somewhat) public at your url /_src
+Also read the caveats below if you did not specify a MONGO_URL
+
+### What happens when I don't specify a MONGO_URL
+When you don't specify a MONGO_URL we bundle a local version of MonogoDB with your application. What this basically means is that if your application ever gets shut down, or scales up to multiple instances you will lose all data that was inserted into your DB.
+
+### How can I change my ROOT_URL
+In order to set the ROOT_URL for your application, pass the -e flag along with the value for what you want the ROOT_URL to be. Example: `meteor-now -e ROOT_URL=www.mymeteorapp.com`
+
+### How do I set a domain name
+In order to use a custom domain name, you would need a Pro account with now.
+
+Run `now domain add --external meteor-now.com`. You should get a response back with steps to verify your domain.
+
+```
+Verification required: Please add the following TXT record on the external DNS server: _now.meteor-now.com: ea39a62a58b3109f92024230826e37f0adc6abcd
+```
+
+In your domain DNS settings, add a TXT record with the above information.
+
+Wait a few moments for the DNS records to propagate and rerun the same command above.
+```
+$ now domains add --external meteor-now.com
+Success! Domain meteor-now.com verified [2s]
+```
+
+Now alias your deployment to the new domain
+```
+$ now alias https://meteor-now-site-izdolpdrvv.now.sh/ www.meteor-now.com
+www.meteor-now.com is a custom domain.
+Verifying the DNS settings for www.meteor-now.com (see https://zeit.world for help)
+Verification OK!
+Provisioning certificate for www.meteor-now.com
+Success! Alias created: https://www.meteor-now.com now points to https://meteor-now-site-izdolpdrvv.now.sh [copied to clipboard]
+```
+
+Read [this blog post](https://zeit.co/blog/now-alias) for more information.
+
+### Why are my _ resource not loading
+Because now enforces SSL, you may experience some issues with 3rd party resources (such as google fonts) not being fetched by your clients due to mixed content warnings. To resolve, just make sure all your assets are being fetched with https:// protocol urls whenever available. If that's not possible, you may need to just download those assets and serve them locally through meteor's public/ directory.
+
+### I deployed my free app but it's failing to connect to MongoDB
+If you're deploying with an included MongoDB, we've observed that sometimes MongoDB takes a while to start. In this case, Meteor complains that it can't connect to MongoDB. Give it a few more minutes and your app should start. Make sure to refresh the page.
+
+### My app requires _ can I use my own Dockerfile?
+We're currently working on adding support for adding custom dependencies to the docker image through passing a `--dependencies` flag. So that applications that rely on things like imagemagick are able to work. We are also looking into the ability to specify your own Dockerfile in the case that you require even more customization.
+
+Stay tuned to updates on the issue: mazlix/meteor-now: Issue #6
+
 # Authors
 <a href="https://www.github.com/mazlix"><img src="https://avatars2.githubusercontent.com/u/519731?v=3&s=460" alt="Justin Avatar" height="100" width="100"></a>|<a href="https://www.github.com/purplecones"><img src="https://avatars1.githubusercontent.com/u/136654?v=3&s=460" height="100" width="100" alt="Mirza Avatar"></a>
 ---|---
