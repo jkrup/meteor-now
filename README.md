@@ -137,7 +137,7 @@ If you're deploying with an included MongoDB, we've observed that sometimes Mong
 ### My app requires _ can I use my own Dockerfile?
 We're currently working on adding support for adding custom dependencies to the docker image through passing a `--dependencies` flag. So that applications that rely on things like imagemagick are able to work. We are also looking into the ability to specify your own Dockerfile in the case that you require even more customization.
 
-Stay tuned to updates on the issue: mazlix/meteor-now: Issue #6
+Stay tuned to updates on the [issue](https://github.com/mazlix/meteor-now/issues/6)
 
 # Authors
 <a href="https://www.github.com/mazlix"><img src="https://avatars2.githubusercontent.com/u/519731?v=3&s=460" alt="Justin Avatar" height="100" width="100"></a>|<a href="https://www.github.com/purplecones"><img src="https://avatars1.githubusercontent.com/u/136654?v=3&s=460" height="100" width="100" alt="Mirza Avatar"></a>
