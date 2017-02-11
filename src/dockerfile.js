@@ -54,7 +54,7 @@ CMD ["node", "main.js"]
     }
     return `
 FROM ${this.dockerImage}
-
+${dependencies}
 RUN apt-get update
 RUN apt-get install -y mongodb
 RUN apt-get install -y supervisor
