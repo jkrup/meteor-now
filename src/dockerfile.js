@@ -7,7 +7,7 @@ class Dockerfile {
     const data = fs.readFileSync('.meteor/release', {
       encoding: 'utf8',
     });
-    const version = data.match(/METEOR@(.*)\n/)[1];
+    const version = data.match(/METEOR@(.*)\r?\n/)[1];
     const microVersion = version.split('.')[1];
 
     this.dependencies = getDependencies();
@@ -20,8 +20,8 @@ class Dockerfile {
       : '--server-only';
 
     // Determine bundle name (it's based on meteor directory)
-    const pwd = process.env.PWD;
-    this.builddir = pwd.split('/')[pwd.split('/').length - 1];
+    const cwd = process.cwd();
+    this.builddir = cwd.split('/')[cwd.split('/').length - 1];
     this.buildzip = `${this.builddir}.tar.gz`;
   }
 
