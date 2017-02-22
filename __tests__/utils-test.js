@@ -1,4 +1,4 @@
-import { getNodeEnv, didPassParam } from '../src/utils';
+import { getDependencies, getNodeEnv, didPassParam } from '../src/utils';
 
 
 describe('Multiple args', () => {
@@ -47,6 +47,21 @@ describe('No args', () => {
   test('getNodeEnv should return development', () => {
     process.argv = ['node', 'file'];
     expect(getNodeEnv()).toBe('development');
+  });
+});
+
+describe('dependency arg', () => {
+  test('no --dependencies', () => {
+    process.argv = ['node', 'file'];
+    expect(getDependencies()).toBe(false);
+  });
+  test('one --dependencies', () => {
+    process.argv = ['node', 'file', '--dependencies', 'imagemagick'];
+    expect(getDependencies()).toEqual(['imagemagick']);
+  });
+  test('multiple --dependencies', () => {
+    process.argv = ['node', 'file', '--dependencies', 'imagemagick', '--dependencies', 'graphicsmagick'];
+    expect(getDependencies()).toEqual(['imagemagick', 'graphicsmagick']);
   });
 });
 
