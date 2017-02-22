@@ -23,7 +23,8 @@
     "colors": "^1.1.2",
     "minimist": "^1.2.0",
     "ora": "^1.0.0",
-    "promise-spawner": "^1.1.3"
+    "promise-spawner": "^1.1.3",
+    "split-file": "^1.2.0"
   },
   "devDependencies": {
     "babel-core": "^6.21.0",

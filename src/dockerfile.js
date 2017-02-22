@@ -1,6 +1,8 @@
 import fs from 'fs';
 import { getDependencies } from './utils';
 
+const isWin = /^win/.test(process.platform);
+
 class Dockerfile {
   constructor() {
     // Set node to correct version based on meteor version (1.4+ vs 1.3-)
@@ -21,7 +23,11 @@ class Dockerfile {
 
     // Determine bundle name (it's based on meteor directory)
     const cwd = process.cwd();
-    this.builddir = cwd.split('/')[cwd.split('/').length - 1];
+    if (isWin) {
+      this.builddir = cwd.split('\\')[cwd.split('\\').length - 1];
+    } else {
+      this.builddir = cwd.split('/')[cwd.split('/').length - 1];
+    }
     this.buildzip = `${this.builddir}.tar.gz`;
   }
 
@@ -43,7 +49,7 @@ ${dependencies}
 ENV NPM_CONFIG_LOGLEVEL warn
 LABEL name="${this.builddir}"
 COPY . .
-RUN cat x* > bundle.tar.gz
+RUN cat *tar.gz* > bundle.tar.gz
 RUN tar -xzf bundle.tar.gz
 WORKDIR bundle/programs/server
 RUN npm install
@@ -65,7 +71,7 @@ ENV NPM_CONFIG_LOGLEVEL warn
 LABEL name="${this.builddir}"
 COPY . /usr/src/app/
 WORKDIR /usr/src/app
-RUN cat x* > bundle.tar.gz
+RUN cat *tar.gz* > bundle.tar.gz
 RUN tar -xzf bundle.tar.gz
 WORKDIR bundle/programs/server
 RUN npm install
