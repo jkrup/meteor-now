@@ -32,7 +32,7 @@ const createSupervisorFile = async () => {
 
 const splitBuild = async () => {
   logger('splitting bundle');
-  await new Promise(function(resolve, reject) {
+  await new Promise((resolve, reject) => {
     splitFile.splitFileBySize(`.meteor/local/builds/${dockerfile.buildzip}`, 999999, (err, names) => {
       if (err) {
         reject(err);
