@@ -2,6 +2,7 @@
 import 'babel-polyfill';
 import colors from 'colors';
 import splitFile from 'split-file';
+import del from 'delete';
 import spinner from './spinner';
 import Command from './command';
 import logger from './logger';
@@ -82,8 +83,7 @@ const deployMeteorApp = async () => {
 
 const cleanup = async () => {
   logger('cleaning up');
-  const splitCommand = new Command('rm .meteor/local/builds/*');
-  await splitCommand.run();
+  await del.promise(['.meteor/local/builds/*']);
 };
 
 const prepareForUpload = async () => {
