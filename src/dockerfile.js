@@ -49,7 +49,7 @@ ${dependencies}
 ENV NPM_CONFIG_LOGLEVEL warn
 LABEL name="${this.builddir}"
 COPY . .
-RUN cat *tar.gz* > bundle.tar.gz
+RUN cat *sf-part* > bundle.tar.gz
 RUN tar -xzf bundle.tar.gz
 WORKDIR bundle/programs/server
 RUN npm install
@@ -71,7 +71,7 @@ ENV NPM_CONFIG_LOGLEVEL warn
 LABEL name="${this.builddir}"
 COPY . /usr/src/app/
 WORKDIR /usr/src/app
-RUN cat *tar.gz* > bundle.tar.gz
+RUN cat *sf-part* > bundle.tar.gz
 RUN tar -xzf bundle.tar.gz
 WORKDIR bundle/programs/server
 RUN npm install
