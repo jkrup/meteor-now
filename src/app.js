@@ -34,10 +34,12 @@ const createSupervisorFile = async () => {
 const splitBuild = async () => {
   logger('splitting bundle');
   await new Promise((resolve, reject) => {
-    splitFile.splitFileBySize(`.meteor/local/builds/${dockerfile.buildzip}`, 999999, (err, names) => {
+    splitFile.splitFileBySize(`.meteor/local/builds/${dockerfile.buildzip}`, 999999, async (err, names) => {
       if (err) {
         reject(err);
       }
+      // delete original bundle file so that it doesnt get uploaded to now
+      await del.promise([`.meteor/local/builds/${dockerfile.buildzip}`]);
       resolve(names);
     });
   });
