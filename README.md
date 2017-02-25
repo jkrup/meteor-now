@@ -1,9 +1,9 @@
-# Meteor Now [![CircleCI](https://circleci.com/gh/mazlix/meteor-now.svg?style=svg)](https://circleci.com/gh/mazlix/meteor-now) [![npm version](https://badge.fury.io/js/meteor-now.svg)](https://badge.fury.io/js/meteor-now)
+# Meteor Now [![CircleCI](https://circleci.com/gh/jkrup/meteor-now.svg?style=svg)](https://circleci.com/gh/jkrup/meteor-now) [![npm version](https://badge.fury.io/js/meteor-now.svg)](https://badge.fury.io/js/meteor-now)
 
 `meteor-now` is a tool to let you instantly deploy your Meteor apps with one command using ZEIT's [▲now](http://zeit.co/now) service. Just run `meteor-now` and instantly deploy your Meteor app like you could back in the good 'ol days of `meteor deploy`.
 
 <p align="center">
-  <img src="https://github.com/mazlix/meteor-now/raw/master/assets/meteor-now-intro.gif">
+  <img src="https://github.com/jkrup/meteor-now/raw/master/assets/meteor-now-intro.gif">
 </p>
 
 ## Demo
@@ -137,13 +137,13 @@ If you're deploying with an included MongoDB, we've observed that sometimes Mong
 ### My app requires _ can I use my own Dockerfile?
 We're currently working on adding support for adding custom dependencies to the docker image through passing a `--dependencies` flag. So that applications that rely on things like imagemagick are able to work. We are also looking into the ability to specify your own Dockerfile in the case that you require even more customization.
 
-Stay tuned to updates on the [issue](https://github.com/mazlix/meteor-now/issues/6)
+Stay tuned to updates on the [issue](https://github.com/jkrup/meteor-now/issues/6)
 
 ### Does this work with windows?
 Currently `meteor-now` does **NOT** support windows.
 
 # Authors
-<a href="https://www.github.com/mazlix"><img src="https://avatars2.githubusercontent.com/u/519731?v=3&s=460" alt="Justin Avatar" height="100" width="100"></a>|<a href="https://www.github.com/purplecones"><img src="https://avatars1.githubusercontent.com/u/136654?v=3&s=460" height="100" width="100" alt="Mirza Avatar"></a>
+<a href="https://www.github.com/jkrup"><img src="https://avatars2.githubusercontent.com/u/519731?v=3&s=460" alt="Justin Avatar" height="100" width="100"></a>|<a href="https://www.github.com/purplecones"><img src="https://avatars1.githubusercontent.com/u/136654?v=3&s=460" height="100" width="100" alt="Mirza Avatar"></a>
 ---|---
 Justin Krup|Mirza Joldic
-[@mazlix](https://www.github.com/mazlix)|[@purplecones](https://www.github.com/purplecones)
+[@jkrup](https://www.github.com/jkrup)|[@purplecones](https://www.github.com/purplecones)
