@@ -139,9 +139,6 @@ We're currently working on adding support for adding custom dependencies to the 
 
 Stay tuned to updates on the [issue](https://github.com/jkrup/meteor-now/issues/6)
 
-### Does this work with windows?
-Currently `meteor-now` does **NOT** support windows.
-
 # Authors
 <a href="https://www.github.com/jkrup"><img src="https://avatars2.githubusercontent.com/u/519731?v=3&s=460" alt="Justin Avatar" height="100" width="100"></a>|<a href="https://www.github.com/purplecones"><img src="https://avatars1.githubusercontent.com/u/136654?v=3&s=460" height="100" width="100" alt="Mirza Avatar"></a>
 ---|---

@@ -1,6 +1,8 @@
 // required for async/await to work
 import 'babel-polyfill';
 import colors from 'colors';
+import splitFile from 'split-file';
+import del from 'delete';
 import spinner from './spinner';
 import Command from './command';
 import logger from './logger';
@@ -31,8 +33,16 @@ const createSupervisorFile = async () => {
 
 const splitBuild = async () => {
   logger('splitting bundle');
-  const splitCommand = new Command(`split -b 999999 .meteor/local/builds/${dockerfile.buildzip} .meteor/local/builds/x && rm .meteor/local/builds/${dockerfile.buildzip}`);
-  await splitCommand.run();
+  await new Promise((resolve, reject) => {
+    splitFile.splitFileBySize(`.meteor/local/builds/${dockerfile.buildzip}`, 999999, async (err, names) => {
+      if (err) {
+        reject(err);
+      }
+      // delete original bundle file so that it doesnt get uploaded to now
+      await del.promise([`.meteor/local/builds/${dockerfile.buildzip}`]);
+      resolve(names);
+    });
+  });
 };
 
 const handleMeteorSettings = async () => {
@@ -75,8 +85,7 @@ const deployMeteorApp = async () => {
 
 const cleanup = async () => {
   logger('cleaning up');
-  const splitCommand = new Command('rm .meteor/local/builds/x* .meteor/local/builds/Dockerfile');
-  await splitCommand.run();
+  await del.promise(['.meteor/local/builds/*']);
 };
 
 const prepareForUpload = async () => {
