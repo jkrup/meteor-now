@@ -1,6 +1,6 @@
 {
   "name": "meteor-now",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Deploy meteor apps with one command using now.sh (https://zeit.co/now)",
   "main": "./index.js",
   "repository": "https://github.com/jkrup/meteor-now",
@@ -25,7 +25,7 @@
     "minimist": "^1.2.0",
     "ora": "^1.0.0",
     "promise-spawner": "^1.1.3",
-    "split-file": "^1.2.0"
+    "split-file": "2.0.0-alpha.1"
   },
   "devDependencies": {
     "babel-core": "^6.21.0",
