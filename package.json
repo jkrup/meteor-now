@@ -22,6 +22,7 @@
     "cli-spinners": "^1.0.0",
     "colors": "^1.1.2",
     "delete": "^0.3.2",
+    "lodash": "^4.17.4",
     "minimist": "^1.2.0",
     "now-client": "^0.7.0",
     "ora": "^1.0.0",
