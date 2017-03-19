@@ -1,8 +1,10 @@
 // required for async/await to work
 import 'babel-polyfill';
 import colors from 'colors';
+import _ from 'lodash';
 import splitFile from 'split-file';
 import del from 'delete';
+import nowClient from 'now-client';
 import spinner from './spinner';
 import Command from './command';
 import logger from './logger';
@@ -77,10 +79,22 @@ const deployMeteorApp = async () => {
   const meteorSettingsArg = meteorSettingsVar ? `-e METEOR_SETTINGS='${meteorSettingsVar}'` : '';
   const rootUrl = !didPassParam('ROOT_URL') ? '-e ROOT_URL=http://localhost.com' : '';
   const deployCommand = new Command(`cd .meteor/local/builds && now -e PORT=3000 ${mongoUrl} ${rootUrl} ${args} ${meteorSettingsArg}`);
-  const stdOut = await deployCommand.run();
-  const deployedAppUrl = stdOut.out.toString();
+  await deployCommand.run();
   spinner.succeed(message);
-  return deployedAppUrl;
+};
+
+const getDeploymentUrl = async () => {
+  logger('getting deployment url...');
+  const now = nowClient();
+  let deployments;
+  try {
+    deployments = await now.getDeployments();
+  } catch (err) {
+    console.error(err); // eslint-disable-line no-console
+  }
+  // get latest deployment url from the list
+  const sortedDeployments = _.sortBy(deployments, 'created');
+  return sortedDeployments[sortedDeployments.length - 1];
 };
 
 const cleanup = async () => {
@@ -103,9 +117,10 @@ const main = async () => {
   try {
     await buildMeteorApp();
     await prepareForUpload();
-    const appUrl = await deployMeteorApp();
+    await deployMeteorApp();
+    const deployment = await getDeploymentUrl();
     await cleanup();
-    spinner.succeed(`meteor app deployed to ${appUrl.split(',')[0]}`);
+    spinner.succeed(`meteor app deployed to ${deployment.url}`);
   } catch (e) {
     spinner.fail();
     console.error(e); // eslint-disable-line no-console

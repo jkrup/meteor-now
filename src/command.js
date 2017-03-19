@@ -19,7 +19,7 @@ export default class Command {
   run() {
     logger(`running command: ${this.command}`);
     return new Promise((resolve) => {
-      this.spawner.spawn(this.command).then(function () {
+      this.spawner.spawn(this.command).then(() => {
         resolve(this.data);
       });
     });
