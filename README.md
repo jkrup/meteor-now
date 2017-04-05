@@ -89,8 +89,7 @@ In order to see detailed deployment logs as they happen, pass the `-d` when you 
 
 ## FAQ
 ### Can I use this in production?
-Sort of! Now supports dynamic autoscaling of apps, but unfortunately at the moment they do not support sticky sessions, so some of your users may have issues of being randomly logged out and losing Session data.
-You should read all the caveats related to `now` if you are not paying for the monthly plan– You only get 1GB of bandwidth per month, and also your source files are made (somewhat) public at your url /_src
+Sort of! Now supports dynamic autoscaling of apps, you should read all the caveats related to `now` if you are not paying for the monthly plan– You only get 1GB of bandwidth per month, and also your source files are made (somewhat) public at your url /_src
 Also read the caveats below if you did not specify a MONGO_URL
 
 ### What happens when I don't specify a MONGO_URL
