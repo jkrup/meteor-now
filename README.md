@@ -89,7 +89,7 @@ In order to see detailed deployment logs as they happen, pass the `-d` when you 
 
 ## FAQ
 ### Can I use this in production?
-Sort of! Now supports dynamic autoscaling of apps, you should read all the caveats related to `now` if you are not paying for the monthly plan– You only get 1GB of bandwidth per month, and also your source files are made (somewhat) public at your url /_src
+Yes– if you are paying for ▲now and using an external database! ▲now supports dynamic autoscaling of apps (with sticky-sessions), you should read all the caveats related to `now` if you are not paying for a monthly plan– You only get 1GB of bandwidth per month, and also your source files are made (somewhat) public at your url /_src
 Also read the caveats below if you did not specify a MONGO_URL
 
 ### What happens when I don't specify a MONGO_URL
