@@ -1,6 +1,7 @@
 import { spawnProcess } from './process';
 import { meteorNowBuildPath } from './constants';
 import { readFile } from './files';
+import { getEnvironmentVariable } from './args';
 import logger from './logger';
 
 export const buildMeteorApp = async () => {
@@ -26,6 +27,20 @@ export const getMicroVersion = async () => {
   const version = await getVersion();
   return version.split('.')[1];
 };
+
+export const getMeteorSettings = async () => {
+  const nodeEnv = getEnvironmentVariable('NODE_ENV');
+  if (nodeEnv) {
+    const settingsFilePath = `${nodeEnv}.settings.json`;
+    try {
+      const settingsFile = await readFile(settingsFilePath);
+      return settingsFile.replace(/\r?\n|\r/g, '');
+    } catch (e) {
+      throw e;
+    }
+  }
+  return null;
+}
 
 export const shouldBeServerOnly = () =>
   parseInt(getMicroVersion(), 10) < 3 ? false : true;
