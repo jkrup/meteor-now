@@ -11,6 +11,7 @@ const main = async () => {
     await splitBuild();
     await deploy();
   } catch (e) {
+    // eslint-disable-next-line
     console.error(e);
   }
 };

@@ -1,7 +1,7 @@
 import { spawn } from 'child_process';
 import logger from './logger';
 
-export const spawnProcess = (cmd, args) => {
+export default (cmd, args) => {
   logger(`$ ${cmd}`, args);
   return new Promise((resolve, reject) => {
     const child = spawn(cmd, args, {
@@ -11,9 +11,9 @@ export const spawnProcess = (cmd, args) => {
 
     child.on('exit', (code, signal) => {
       if (code === 0) {
-        resolve({code, signal});
+        resolve({ code, signal });
       } else {
-        reject({code, signal});
+        reject({ code, signal });
       }
     });
   });

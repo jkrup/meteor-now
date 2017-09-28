@@ -9,6 +9,8 @@ const encoding = 'utf8';
 export const readFile = path => fs.readFileSync(path, encoding);
 export const writeFile = (path, data) => fs.writeFileSync(path, data, encoding);
 
+export const deletePath = path => del(path, { force: true });
+
 // split meteor bundle into pieces
 export const splitBuild = async () => {
   logger('splitting bundle');
@@ -18,8 +20,6 @@ export const splitBuild = async () => {
   );
   await deletePath(`${meteorNowBuildPath}/${tarFileName}`);
 };
-
-export const deletePath = path => del(path, { force: true });
 
 export const clearBuildFolder = () => {
   logger('clearing build folder');

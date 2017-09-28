@@ -18,14 +18,24 @@
     "prestart": "npm run build && chmod +x build/main.js",
     "build": "backpack build",
     "dev": "backpack",
-    "prepublish": "npm run build"
+    "prepublish": "npm run build",
+    "lint": "eslint src",
+    "test": "npm run lint && jest"
   },
   "dependencies": {
     "backpack-core": "^0.4.2",
     "del": "^3.0.0",
+    "eslint-plugin-jsx-a11y": "^6.0.2",
     "file-system": "^2.2.2",
-    "lodash": "^4.17.4",
     "split-file": "^2.1.0",
     "yargs": "^9.0.1"
+  },
+  "devDependencies": {
+    "eslint": "^4.7.2",
+    "eslint-config-airbnb": "^15.1.0",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-react": "^7.4.0",
+    "jest": "^18.1.0",
+    "mocha": "^3.2.0"
   }
 }

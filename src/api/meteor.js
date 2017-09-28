@@ -1,23 +1,8 @@
-import { spawnProcess } from './process';
+import spawnProcess from './process';
 import { meteorNowBuildPath } from './constants';
 import { readFile } from './files';
 import { getEnvironmentVariable } from './args';
 import logger from './logger';
-
-// build the meteor app by using meteor build
-export const buildMeteorApp = async () => {
-  logger('building app');
-  await spawnProcess(
-    `meteor`,
-    [
-      'build',
-      meteorNowBuildPath,
-      shouldBeServerOnly() ? '--server-only' : '',
-      '--architecture=os.linux.x86_64'
-    ]
-  );
-  logger('done building');
-};
 
 // get the full meteor release version
 export const getVersion = async () => {
@@ -29,6 +14,27 @@ export const getVersion = async () => {
 export const getMicroVersion = async () => {
   const version = await getVersion();
   return version.split('.')[1];
+};
+
+// check to see if server only flag should be
+// passed to meteor build
+export const shouldBeServerOnly = () => {
+  if (parseInt(getMicroVersion(), 10) < 3) {
+    return false;
+  }
+  return true;
+};
+
+// build the meteor app by using meteor build
+export const buildMeteorApp = async () => {
+  logger('building app');
+  await spawnProcess('meteor', [
+    'build',
+    meteorNowBuildPath,
+    shouldBeServerOnly() ? '--server-only' : '',
+    '--architecture=os.linux.x86_64',
+  ]);
+  logger('done building');
 };
 
 // get meteor settings by checking for settings.json files
@@ -45,9 +51,4 @@ export const getMeteorSettings = async () => {
     }
   }
   return null;
-}
-
-// check to see if server only flag should be
-// passed to meteor build
-export const shouldBeServerOnly = () =>
-  parseInt(getMicroVersion(), 10) < 3 ? false : true;
+};

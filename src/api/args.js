@@ -9,7 +9,7 @@ export const getEnvironmentVariables = () => {
   const args = getArg('e');
   if (!args) return null;
   const argsArray = args instanceof Array ? args : [args];
-  return argsArray.map(e => {
+  return argsArray.map((e) => {
     const envArray = e.split('=');
     return {
       name: envArray[0],
@@ -19,10 +19,7 @@ export const getEnvironmentVariables = () => {
 };
 
 // return a single env object
-export const getEnvironmentVariable = (
-  name,
-  args = getEnvironmentVariables(),
-) => {
+export const getEnvironmentVariable = (name, args = getEnvironmentVariables()) => {
   if (!args) {
     return null;
   }
