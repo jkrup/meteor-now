@@ -34,7 +34,7 @@ export const getEnvironmentVariable = (name, args = getEnvironmentVariables()) =
 // get all variables except for MONGO_URL, ROOT_URL, METEOR_SETTINGS and PORT
 // this is in case user passed additional environment variables to their app
 // those would be passed down to the now cli command
-export const getRemainingVariables = (environmentVariables) => {
+export const getRemainingVariables = (environmentVariables = getEnvironmentVariables()) => {
   if (!environmentVariables) {
     return [];
   }
@@ -48,30 +48,32 @@ export const getRemainingVariables = (environmentVariables) => {
 // get remaining options that user has passsed to meteor-now
 export const getRemainingOptions = () => {
   const args = getArgs();
-  return Object.entries(args)
-    // filter out specified list of options
-    .filter(arg => ignoreOptionsArray.indexOf(arg[0]) === -1)
-    // filter out all environment variables
-    .filter(arg => arg[0] !== 'e')
-    // check if flag is of boolean type and just return flag name
-    // yargs sets true if only flag was present without value
-    .map((arg) => {
-      if (typeof arg[1] === 'boolean') {
-        return [arg[0]];
-      }
-      return [arg[0], arg[1]];
-    })
-    // prefix flag names with either a single dash (-) or double (--) dash
-    .map((arg) => {
-      const argWithPrefix = [...arg];
-      if (arg[0].length > 1) {
-        argWithPrefix[0] = `--${arg[0]}`;
-      } else {
-        argWithPrefix[0] = `-${arg[0]}`;
-      }
-      return argWithPrefix;
-    });
+  return (
+    Object.entries(args)
+      // filter out specified list of options
+      .filter(arg => ignoreOptionsArray.indexOf(arg[0]) === -1)
+      // filter out all environment variables
+      .filter(arg => arg[0] !== 'e')
+      // check if flag is of boolean type and just return flag name
+      // yargs sets true if only flag was present without value
+      .map((arg) => {
+        if (typeof arg[1] === 'boolean') {
+          return [arg[0]];
+        }
+        return [arg[0], arg[1]];
+      })
+      // prefix flag names with either a single dash (-) or double (--) dash
+      .map((arg) => {
+        const argWithPrefix = [...arg];
+        if (arg[0].length > 1) {
+          argWithPrefix[0] = `--${arg[0]}`;
+        } else {
+          argWithPrefix[0] = `-${arg[0]}`;
+        }
+        return argWithPrefix;
+      })
+  );
 };
 
 // eslint-disable-next-line
-export const flattenOptions = options => [].concat.apply([], options)
+export const flattenOptions = options => [].concat.apply([], options);

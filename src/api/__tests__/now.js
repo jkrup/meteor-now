@@ -9,7 +9,7 @@ describe('now test', () => {
       `${os.homedir()}/.meteor-now/build`,
       ['--name', 'meteor-now'],
       ['-e', 'PORT=3000'],
-      ['-e', 'ROOT_URL=http://localhost.com'],
+      ['-e', 'ROOT_URL=http://localhost:3000'],
       ['-e', 'MONGO_URL=mongodb://127.0.0.1:27017'],
       ['-e', 'METEOR_SETTINGS=\'\'{ "foo": "bar" }\'\''], [],
     ]);
@@ -22,7 +22,7 @@ describe('now test', () => {
       `${os.homedir()}/.meteor-now/build`,
       ['--name', 'meteor-now'],
       ['-e', 'PORT=3000'],
-      ['-e', 'ROOT_URL=http://localhost.com'],
+      ['-e', 'ROOT_URL=http://localhost:3000'],
       ['-e', 'MONGO_URL=mongodb://127.0.0.1:27017'],
       ['-e', 'MAGIC_VAR=magical'],
       ['-e', 'METEOR_SETTINGS=\'\'{ "foo": "bar" }\'\''], [],
