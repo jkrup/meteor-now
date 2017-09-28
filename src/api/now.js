@@ -2,8 +2,10 @@ import { spawnProcess } from './process';
 import { getEnvironmentVariable, getEnvironmentVariables } from './args';
 import { getMeteorSettings } from './meteor';
 import { meteorNowBuildPath, projectName } from './constants';
+import logger from './logger';
 
 export const deploy = async () => {
+  logger('deploying app')
   const environmentVariables = await getEnvironmentVariables();
   const rootUrl =
     getEnvironmentVariable('ROOT_URL', environmentVariables) ||

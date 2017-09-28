@@ -6,8 +6,8 @@ import { getMicroVersion } from './meteor';
 import { getEnvironmentVariable, getArg } from './args';
 
 export const prepareDockerConfig = async () => {
-  const dockerfileContents = await getDockerfileContents();
   logger('creating docker config');
+  const dockerfileContents = await getDockerfileContents();
   await writeFile(`${meteorNowBuildPath}/Dockerfile`, dockerfileContents);
   if (shouldIncludeMongo()) {
     logger('creating supervisord.conf');

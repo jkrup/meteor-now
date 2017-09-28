@@ -5,7 +5,7 @@ import { getEnvironmentVariable } from './args';
 import logger from './logger';
 
 export const buildMeteorApp = async () => {
-  logger('building meteor app');
+  logger('building app');
   await spawnProcess(
     `meteor`,
     [
