@@ -15,9 +15,13 @@ export const getEnvironmentVariables = () => {
   });
 };
 
-export const getEnvironmentVariable = name => {
-  const args = getEnvironmentVariables();
-  if (!args) return null;
+export const getEnvironmentVariable = (
+  name,
+  args = getEnvironmentVariables(),
+) => {
+  if (!args) {
+    return null;
+  }
   const variable = args.find(e => e.name === name);
   return variable ? variable.value : null;
 };
