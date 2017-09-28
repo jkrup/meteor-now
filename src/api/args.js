@@ -1,7 +1,7 @@
-import { argv } from 'yargs';
+import yargs from 'yargs';
 
 // returns the arg based on name
-export const getArg = argName => argv[argName];
+export const getArg = (argName, argv = process.argv) => yargs(argv).argv[argName];
 
 // returns list of environment variables (-e flag)
 // as an array of env objects [{ name: 'MONGO_URL', value: 'mongodb...' }]
