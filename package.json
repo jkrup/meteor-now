@@ -20,7 +20,8 @@
     "dev": "backpack",
     "prepublish": "npm run build",
     "lint": "eslint src",
-    "test": "npm run lint && jest"
+    "test": "npm run lint && jest",
+    "test:watch": "jest --watch"
   },
   "dependencies": {
     "backpack-core": "^0.4.2",
@@ -31,6 +32,7 @@
     "yargs": "^9.0.1"
   },
   "devDependencies": {
+    "babel-jest": "^21.2.0",
     "eslint": "^4.7.2",
     "eslint-config-airbnb": "^15.1.0",
     "eslint-plugin-import": "^2.7.0",
