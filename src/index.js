@@ -5,10 +5,10 @@ import { deploy } from './api/now';
 
 const main = async () => {
   try {
-    await clearBuildFolder();
-    await buildMeteorApp();
-    await prepareDockerConfig();
-    await splitBuild();
+    // await clearBuildFolder();
+    // await buildMeteorApp();
+    // await prepareDockerConfig();
+    // await splitBuild();
     await deploy();
   } catch (e) {
     // eslint-disable-next-line

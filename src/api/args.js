@@ -72,3 +72,6 @@ export const getRemainingOptions = () => {
       return argWithPrefix;
     });
 };
+
+// eslint-disable-next-line
+export const flattenOptions = options => [].concat.apply([], options)

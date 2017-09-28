@@ -4,6 +4,7 @@ import {
   getEnvironmentVariables,
   getRemainingOptions,
   getRemainingVariables,
+  flattenOptions,
 } from './args';
 import { getMeteorSettings } from './meteor';
 import { meteorNowBuildPath, projectName } from './constants';
@@ -61,5 +62,5 @@ export const deploy = async () => {
   // spawn child process to execute now command. Flatten nowOptions
   // in order to properly pass all the options to now
   // eslint-disable-next-line
-  await spawnProcess('now', [].concat.apply([], nowOptions));
+  await spawnProcess('now', flattenOptions(nowOptions));
 };
