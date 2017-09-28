@@ -18,8 +18,8 @@ export const getRemainingVariables = (environmentVariables) => {
     .map(v => ['-e', `${v.name}=${v.value}`]);
 };
 
-export const deploy = async () => {
-  logger('deploying app');
+// construct an array of options to be passed to the now command
+export const constructNowOptions = async () => {
   // get list of all environment variables user passed with the -e flag
   const environmentVariables = await getEnvironmentVariables();
   // construct the ROOT_URL variable
@@ -28,6 +28,20 @@ export const deploy = async () => {
   // construct the MONGO_URL variable
   const mongoUrl =
     getEnvironmentVariable('MONGO_URL', environmentVariables) || 'mongodb://127.0.0.1:27017';
+
+  const remainingOptions = getRemainingVariables(environmentVariables);
+
+  // options passed to the now cli tool. This array will be flattened
+  // and will eventually be a string seperated by spaces.
+  const options = [
+    meteorNowBuildPath,
+    ['--name', projectName],
+    ['-e', 'PORT=3000'],
+    ['-e', `ROOT_URL=${rootUrl}`],
+    ['-e', `MONGO_URL=${mongoUrl}`],
+    ...remainingOptions,
+  ];
+
   // construct the METEOR_SETTINGS, first by checking if user passed
   // -e METEOR_SETTINGS='{ "foo": "bar" }' option to meteor-now
   let meteorSettings = getEnvironmentVariable('METEOR_SETTINGS', environmentVariables);
@@ -36,18 +50,17 @@ export const deploy = async () => {
     // check if NODE_ENV is passed and look for production.settings.json file
     meteorSettings = await getMeteorSettings();
   }
-  const remainingVariables = getRemainingVariables(environmentVariables);
-  // options passed to the now cli tool. This array will be flattened
-  // and will eventually be a string seperated by spaces.
-  const nowOptions = [
-    meteorNowBuildPath,
-    ['--name', projectName],
-    ['-e', 'PORT=3000'],
-    ['-e', `ROOT_URL=${rootUrl}`],
-    ['-e', `MONGO_URL=${mongoUrl}`],
-    ...remainingVariables,
-    meteorSettings && ['-e', `METEOR_SETTINGS='${meteorSettings}'`],
-  ];
+  if (meteorSettings) {
+    options.push(['-e', `METEOR_SETTINGS='${meteorSettings}'`]);
+  }
+
+  return options;
+};
+
+// deploy app with correct options
+export const deploy = async () => {
+  logger('deploying app');
+  const nowOptions = await constructNowOptions();
   // spawn child process to execute now command. Flatten nowOptions
   // in order to properly pass all the options to now
   // eslint-disable-next-line

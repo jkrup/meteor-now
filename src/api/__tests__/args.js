@@ -20,6 +20,7 @@ describe('args test', () => {
     const environmentVariables = getEnvironmentVariables();
     expect(environmentVariables.length).toBe(2);
   });
+
   test('it should return all environment variables', () => {
     process.argv = [
       'node',
