@@ -5,7 +5,7 @@ export default (cmd, args) => {
   logger(`$ ${cmd}`, args);
   return new Promise((resolve, reject) => {
     const child = spawn(cmd, args, {
-      stdio: 'inherit',
+      stdio: [process.stdin, 'ignore', process.stderr],
       shell: true,
     });
 

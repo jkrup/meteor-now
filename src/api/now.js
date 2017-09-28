@@ -1,22 +1,13 @@
 import spawnProcess from './process';
-import { getEnvironmentVariable, getEnvironmentVariables } from './args';
+import {
+  getEnvironmentVariable,
+  getEnvironmentVariables,
+  getRemainingOptions,
+  getRemainingVariables,
+} from './args';
 import { getMeteorSettings } from './meteor';
-import { meteorNowBuildPath, projectName, ignoreVarsArray } from './constants';
+import { meteorNowBuildPath, projectName } from './constants';
 import logger from './logger';
-
-// get all variables except for MONGO_URL, ROOT_URL, METEOR_SETTINGS and PORT
-// this is in case user passed additional environment variables to their app
-// those would be passed down to the now cli command
-export const getRemainingVariables = (environmentVariables) => {
-  if (!environmentVariables) {
-    return [];
-  }
-  // filter our vars we already handled and return an array
-  // where first value is the flag -e and second is the ENV=VALUE
-  return environmentVariables
-    .filter(v => ignoreVarsArray.indexOf(v.name) === -1)
-    .map(v => ['-e', `${v.name}=${v.value}`]);
-};
 
 // construct an array of options to be passed to the now command
 export const constructNowOptions = async () => {
@@ -29,7 +20,7 @@ export const constructNowOptions = async () => {
   const mongoUrl =
     getEnvironmentVariable('MONGO_URL', environmentVariables) || 'mongodb://127.0.0.1:27017';
 
-  const remainingOptions = getRemainingVariables(environmentVariables);
+  const remainingVariables = getRemainingVariables(environmentVariables);
 
   // options passed to the now cli tool. This array will be flattened
   // and will eventually be a string seperated by spaces.
@@ -39,7 +30,7 @@ export const constructNowOptions = async () => {
     ['-e', 'PORT=3000'],
     ['-e', `ROOT_URL=${rootUrl}`],
     ['-e', `MONGO_URL=${mongoUrl}`],
-    ...remainingOptions,
+    ...remainingVariables,
   ];
 
   // construct the METEOR_SETTINGS, first by checking if user passed
@@ -52,6 +43,12 @@ export const constructNowOptions = async () => {
   }
   if (meteorSettings) {
     options.push(['-e', `METEOR_SETTINGS='${meteorSettings}'`]);
+  }
+
+  // get any remaining custom flags passed in by user
+  const remainingOptions = getRemainingOptions();
+  if (remainingOptions) {
+    options.push(remainingOptions);
   }
 
   return options;

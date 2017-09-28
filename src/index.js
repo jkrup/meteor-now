@@ -12,7 +12,11 @@ const main = async () => {
     await deploy();
   } catch (e) {
     // eslint-disable-next-line
+    if (e.signal) console.error(e.signal);
+    if (e.code) process.exit(e.code);
+    // eslint-disable-next-line
     console.error(e);
+    process.exit(1);
   }
 };
 
