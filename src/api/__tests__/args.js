@@ -1,4 +1,4 @@
-import { getArg } from '../args';
+// import { getArg } from '../args';
 
 describe('args test', () => {
   test('it should return correct arg', () => {
