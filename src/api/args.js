@@ -1,7 +1,10 @@
 import { argv } from 'yargs';
 
+// returns the arg based on name
 export const getArg = argName => argv[argName];
 
+// returns list of environment variables (-e flag)
+// as an array of env objects [{ name: 'MONGO_URL', value: 'mongodb...' }]
 export const getEnvironmentVariables = () => {
   const args = getArg('e');
   if (!args) return null;
@@ -15,6 +18,7 @@ export const getEnvironmentVariables = () => {
   });
 };
 
+// return a single env object
 export const getEnvironmentVariable = (
   name,
   args = getEnvironmentVariables(),

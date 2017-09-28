@@ -5,12 +5,16 @@ import { meteorNowBuildPath, projectName } from './constants';
 import { getMicroVersion } from './meteor';
 import { getEnvironmentVariable, getArg } from './args';
 
+// prepares all docker related files
 export const prepareDockerConfig = async () => {
   logger('creating docker config');
   const dockerfileContents = await getDockerfileContents();
   await writeFile(`${meteorNowBuildPath}/Dockerfile`, dockerfileContents);
+
+  // if user did not pass MONGO_URL
   if (shouldIncludeMongo()) {
     logger('creating supervisord.conf');
+    // create a supervisord.conf file to run mongodb inside the container
     await writeFile(
       `${meteorNowBuildPath}/supervisord.conf`,
       getSupervisordFileContents(),
@@ -18,9 +22,13 @@ export const prepareDockerConfig = async () => {
   }
 };
 
+// construct the Dockerfile contents
 export const getDockerfileContents = async () => {
+  // check if user pass any --deps to install in the image
   const deps = getDeps();
+  // get approriate docker image vesion
   const dockerImage = getDockerImage();
+  // check to see if mogno should be included
   const includeMongo = shouldIncludeMongo();
   return `FROM ${dockerImage}
 ${!!deps ? getDependencyInstallScripts(deps) : ''}
@@ -43,15 +51,19 @@ EXPOSE 3000
 ${includeMongo ? 'CMD ["supervisord"]' : 'CMD ["node", "main.js"]'}`;
 };
 
+// get docker image version
 export const getDockerImage = () =>
   parseInt(getMicroVersion(), 10) < 4
     ? 'nodesource/jessie:0.10.43'
     : 'node:boron';
 
+// check if mongo url was passed as a env var
 export const shouldIncludeMongo = () => !getEnvironmentVariable('MONGO_URL');
 
+// get the value of --deps flag
 export const getDeps = () => getArg('deps');
 
+// construct the apt-get deps lines for the Dockerfile
 export const getDependencyInstallScripts = deps => {
   if (!deps) {
     return '';
@@ -66,6 +78,7 @@ export const getDependencyInstallScripts = deps => {
     );
 };
 
+// construct the supervisord contents
 export const getSupervisordFileContents = () => `[supervisord]
 nodaemon=true
 loglevel=debug
