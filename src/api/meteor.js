@@ -27,14 +27,19 @@ export const shouldBeServerOnly = () => {
 
 // build the meteor app by using meteor build
 export const buildMeteorApp = async () => {
-  logger('building app');
-  await spawnProcess('meteor', [
-    'build',
-    meteorNowBuildPath,
-    shouldBeServerOnly() ? '--server-only' : '',
-    '--architecture=os.linux.x86_64',
-  ]);
-  logger('done building');
+  try {
+    logger.info('Building meteor app (this can take several minutes)');
+    await spawnProcess('meteor', [
+      'build',
+      meteorNowBuildPath,
+      shouldBeServerOnly() ? '--server-only' : '',
+      '--architecture=os.linux.x86_64',
+    ]);
+    logger.succeed();
+  } catch (e) {
+    // eslint-disable-next-line
+    logger.error(e);
+  }
 };
 
 // get meteor settings by checking for settings.json files

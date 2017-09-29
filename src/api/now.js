@@ -5,6 +5,7 @@ import {
   getRemainingOptions,
   getRemainingVariables,
   flattenOptions,
+  isDebug,
 } from './args';
 import { getMeteorSettings } from './meteor';
 import { meteorNowBuildPath, projectName } from './constants';
@@ -16,7 +17,7 @@ export const constructNowOptions = async () => {
   const environmentVariables = await getEnvironmentVariables();
   // construct the ROOT_URL variable
   const rootUrl =
-    getEnvironmentVariable('ROOT_URL', environmentVariables) || 'http://localhost.com';
+    getEnvironmentVariable('ROOT_URL', environmentVariables) || 'http://localhost:3000';
   // construct the MONGO_URL variable
   const mongoUrl =
     getEnvironmentVariable('MONGO_URL', environmentVariables) || 'mongodb://127.0.0.1:27017';
@@ -57,10 +58,18 @@ export const constructNowOptions = async () => {
 
 // deploy app with correct options
 export const deploy = async () => {
-  logger('deploying app');
-  const nowOptions = await constructNowOptions();
-  // spawn child process to execute now command. Flatten nowOptions
-  // in order to properly pass all the options to now
-  // eslint-disable-next-line
-  await spawnProcess('now', flattenOptions(nowOptions));
+  try {
+    logger.info('Deploying build (this can take several minutes)');
+    const nowOptions = await constructNowOptions();
+    // spawn child process to execute now command. Flatten nowOptions
+    // in order to properly pass all the options to now
+    const deploymentUrl = await spawnProcess('now', flattenOptions(nowOptions));
+    logger.succeed();
+    if (!isDebug()) {
+      logger.info(`App url is ${deploymentUrl}`);
+      logger.succeed();
+    }
+  } catch (e) {
+    logger.error('Something went wrong with now');
+  }
 };

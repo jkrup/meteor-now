@@ -77,3 +77,6 @@ export const getRemainingOptions = () => {
 
 // eslint-disable-next-line
 export const flattenOptions = options => [].concat.apply([], options);
+
+// returns true if use passed in -d flag otherwise false
+export const isDebug = () => !!getArg('d');

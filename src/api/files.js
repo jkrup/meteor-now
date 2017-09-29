@@ -13,15 +13,16 @@ export const deletePath = path => del(path, { force: true });
 
 // split meteor bundle into pieces
 export const splitBuild = async () => {
-  logger('splitting bundle');
-  await splitFile.splitFileBySize(
-    `${meteorNowBuildPath}/${tarFileName}`,
-    99999,
-  );
+  logger.debug('splitting bundle');
+  try {
+    await splitFile.splitFileBySize(`${meteorNowBuildPath}/${tarFileName}`, 99999);
+  } catch (e) {
+    logger.error(e);
+  }
   await deletePath(`${meteorNowBuildPath}/${tarFileName}`);
 };
 
 export const clearBuildFolder = () => {
-  logger('clearing build folder');
+  logger.debug('clearing build folder');
   return deletePath(meteorNowBuildPath);
 };

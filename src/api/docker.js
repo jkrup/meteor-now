@@ -15,7 +15,7 @@ export const shouldIncludeMongo = () => !getEnvironmentVariable('MONGO_URL');
 export const getDeps = () => getArg('deps');
 
 // construct the apt-get deps lines for the Dockerfile
-export const getDependencyInstallScripts = (deps) => {
+export const getDependencyInstallScripts = (deps = getDeps('deps')) => {
   if (!deps) {
     return '';
   }
@@ -68,14 +68,24 @@ command=node "/usr/src/app/bundle/main.js"`;
 
 // prepares all docker related files
 export const prepareDockerConfig = async () => {
-  logger('creating docker config');
-  const dockerfileContents = await getDockerfileContents();
-  await writeFile(`${meteorNowBuildPath}/Dockerfile`, dockerfileContents);
+  try {
+    logger.info('Preparing build');
+    const dockerfileContents = await getDockerfileContents();
+    await writeFile(`${meteorNowBuildPath}/Dockerfile`, dockerfileContents);
 
-  // if user did not pass MONGO_URL
-  if (shouldIncludeMongo()) {
-    logger('creating supervisord.conf');
-    // create a supervisord.conf file to run mongodb inside the container
-    await writeFile(`${meteorNowBuildPath}/supervisord.conf`, getSupervisordFileContents());
+    // if user did not pass MONGO_URL
+    if (shouldIncludeMongo()) {
+      logger.warn(
+        'WARNING: Did not pass a MONGO_URL. Bundling a NON-PRODUCTION version of MongoDB with your application. Read about the limitations here: https://git.io/vM72E',
+      );
+      logger.warn('WARNING: It might take a few minutes for the app to connect to the bundled MongoDB instance after the deployment has completed.');
+      logger.debug('creating supervisord.conf');
+      // create a supervisord.conf file to run mongodb inside the container
+      await writeFile(`${meteorNowBuildPath}/supervisord.conf`, getSupervisordFileContents());
+    }
+    logger.succeed();
+  } catch (e) {
+    // eslint-disable-next-line
+    logger.error(e);
   }
 };
