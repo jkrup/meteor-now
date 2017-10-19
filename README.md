@@ -82,7 +82,7 @@ $ meteor-now -e METEOR_SETTINGS=@meteor-settings -e MONGO_URL=...
 Following the convention of the `NODE_ENV` environment variable, `meteor-now` uses `NODE_ENV` to determine which file to look for.
 It will either look for `development.settings.json` or `production.settings.json` in your root Meteor directory.
 
-Note that `meteor-now` by default looks for `development.settings.json` unless otherwise specified by `-e NODE_ENV` or `-e METEOR_SETTINGS`.
+Note that `meteor-now` by default looks for `development.settings.json` unless otherwise specified by `-e NODE_ENV=development` or `-e METEOR_SETTINGS='{ "foo": "bar" }'`.
 
 ## Debug
 In order to see detailed deployment logs as they happen, pass the `-d` when you deploy.
@@ -127,14 +127,14 @@ Success! Alias created: https://www.meteor-now.com now points to https://meteor-
 
 Read [this blog post](https://zeit.co/blog/now-alias) for more information.
 
-### Why are my _ resource not loading
+### Why are my XX resource not loading
 Because now enforces SSL, you may experience some issues with 3rd party resources (such as google fonts) not being fetched by your clients due to mixed content warnings. To resolve, just make sure all your assets are being fetched with https:// protocol urls whenever available. If that's not possible, you may need to just download those assets and serve them locally through meteor's public/ directory.
 
 ### I deployed my free app but it's failing to connect to MongoDB
 If you're deploying with an included MongoDB, we've observed that sometimes MongoDB takes a while to start. In this case, Meteor complains that it can't connect to MongoDB. Give it a few more minutes and your app should start. Make sure to refresh the page.
 
-### My app requires _ can I use my own Dockerfile?
-We're currently working on adding support for adding custom dependencies to the docker image through passing a `--dependencies` flag. So that applications that rely on things like imagemagick are able to work. We are also looking into the ability to specify your own Dockerfile in the case that you require even more customization.
+### My app requires XX can I use my own Dockerfile?
+We're currently support passing a `--deps 'depName1,depName2'` flag so that applications that rely on things like imagemagick are able to work. We are also looking into the ability to specify your own Dockerfile in the case that you require even more customization.
 
 Stay tuned to updates on the [issue](https://github.com/jkrup/meteor-now/issues/6)
 
