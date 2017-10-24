@@ -16,7 +16,7 @@
   "scripts": {
     "build": "webpack",
     "lint": "eslint src",
-    "prepublish": "npm run build",
+    "prepublishOnly": "npm run build",
     "test": "npm run lint && jest",
     "test:watch": "jest --watch"
   },
