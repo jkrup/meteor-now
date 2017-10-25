@@ -1,9 +1,9 @@
 version: 2
 jobs:
   build:
-    working_directory: ~/tmp
+    working_directory: ~/meteor-now
     docker:
-      - image: circleci/node:7
+      - image: circleci/node:6
     steps:
       - checkout
       - run: npm install
