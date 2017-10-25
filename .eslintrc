@@ -3,5 +3,8 @@
   "env": {
     "node": true,
     "es6": true,
-  }
+  },
+  "rules": {
+    "jsx-a11y/href-no-hash": 0,
+  },
 }

@@ -1,16 +1,9 @@
 {
-  "plugins": ["syntax-dynamic-import", "transform-runtime"],
   "presets": [
-    [
-      "es2015",
-      {
-        "modules": false
+    ["env", {
+      "targets": {
+        "node": "6"
       }
-    ]
+    }]
   ],
-  "env": {
-    "test": {
-      "presets": ["es2015"]
-    }
-  }
 }
