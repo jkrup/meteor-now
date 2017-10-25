@@ -11,5 +11,4 @@ const main = async () => {
   await deploy();
 };
 
-
 main();
