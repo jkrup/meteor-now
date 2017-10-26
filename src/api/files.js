@@ -15,7 +15,7 @@ export const deletePath = path => del(path, { force: true });
 export const splitBuild = async () => {
   logger.debug('splitting bundle');
   try {
-    await splitFile.splitFileBySize(`${meteorNowBuildPath}/${tarFileName}`, 99999);
+    await splitFile.splitFileBySize(`${meteorNowBuildPath}/${tarFileName}`, 999999);
   } catch (e) {
     logger.error(e);
   }
