@@ -146,4 +146,23 @@ describe('args test', () => {
       'abc.com',
     ]);
   });
+
+  test('it should ignore certain flags', () => {
+    process.argv = [
+      'node',
+      '-e',
+      'MONGO_URL=mongodb://127.0.0.1:27017',
+      '-e',
+      'ROOT_URL=http://localhost:3000',
+      '-e',
+      'MY_SPECIAL_VAR=cats',
+      '-e',
+      'SECRET=litter',
+      '--deps',
+      'abc',
+      '--nosplit',
+    ];
+    const remainingVariables = getRemainingVariables();
+    expect(remainingVariables).toEqual([['-e', 'MY_SPECIAL_VAR=cats'], ['-e', 'SECRET=litter']]);
+  });
 });

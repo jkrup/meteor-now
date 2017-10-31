@@ -47,7 +47,7 @@ VOLUME ["/data/db"]`
 LABEL name="${projectName}"
 COPY . /usr/src/app/
 WORKDIR /usr/src/app
-RUN cat *sf-part* > bundle.tar.gz
+${!getArg('nosplit') ? 'RUN cat *sf-part* > bundle.tar.gz' : ''}
 RUN tar -xzf bundle.tar.gz
 WORKDIR bundle/programs/server
 RUN npm install
