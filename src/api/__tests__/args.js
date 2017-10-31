@@ -147,7 +147,6 @@ describe('args test', () => {
     ]);
   });
 
-
   test('it should ignore certain flags', () => {
     process.argv = [
       'node',
