@@ -61,9 +61,6 @@ Finally you should have a `production.settings.json` in your project directory i
 ![METEOR-NOW](assets/zeit-meteor.png "METEOR-NOW")
 `meteor-now` use ZEITs [▲now](https://zeit.co/now) service to deploy the Meteor app in a container. Please refer to their [documentation and support](https://github.com/zeit/) for hosting related details.
 
-# Bundle Splitting
-The `now` free tier has a limitation of 1mb per file. As a workaround, we split the final bundle into pieces prior to uploading. If you are on a paid plan, you can turn this off by passing the `--nosplit` flag like so `meteor-now --nosplit`.
-
 # Additional Info
 ## Full deploy with MongoDB
 `meteor-now` lets you to deploy your Meteor app with a MongoDB included similar to how `meteor deploy` used to work. **This method is not intended for production deployments**. In order to achieve this, we bundle your Meteor app and MongoDB into a a single Dockerfile and we instruct your app to connect to the local MongoDB instance. The Dockerfile gets built in the cloud by `now` and once it's ready, the Meteor app will spin up and connect to the MongoDB instance running locally in that docker container.
@@ -89,6 +86,9 @@ Note that `meteor-now` by default looks for `development.settings.json` unless o
 
 ## Debug
 In order to see detailed deployment logs as they happen, pass the `-d` when you deploy.
+
+## Bundle Splitting
+The `now` free tier has a limitation of 1mb per file. As a workaround, we split the final bundle into pieces prior to uploading. If you are on a paid plan, you can turn this off by passing the `--nosplit` flag like so `meteor-now --nosplit`.
 
 ## FAQ
 ### Can I use this in production?
