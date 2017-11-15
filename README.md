@@ -17,7 +17,7 @@ $ npm install -g now meteor-now
 
 Create `now` account
 ```
-$ now --login
+$ now login
 > Enter your email: <your email>
 > Please follow the link sent to <your email> to log in.
 > Verify that the provided security code in the email matches Pragmatic Manta Ray.
