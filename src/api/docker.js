@@ -6,7 +6,7 @@ import { getEnvironmentVariable, getArg } from './args';
 
 // get docker image version
 export const getDockerImage = () =>
-  (parseInt(getMicroVersion(), 10) < 4 ? 'nodesource/jessie:0.10.43' : 'node:boron');
+  (parseInt(getMicroVersion(), 10) < 4 ? 'nodesource/jessie:0.10.43' : 'node:carbon');
 
 // check if mongo url was passed as a env var
 export const shouldIncludeMongo = () => !getEnvironmentVariable('MONGO_URL');
