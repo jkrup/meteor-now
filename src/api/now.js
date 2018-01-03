@@ -34,9 +34,6 @@ export const constructNowOptions = async () => {
     ['-e', `MONGO_URL=${mongoUrl}`],
     ...remainingVariables,
   ];
-
-  console.log("now options are ", options);
-
   // construct the METEOR_SETTINGS, first by checking if user passed
   // -e METEOR_SETTINGS='{ "foo": "bar" }' option to meteor-now
   let meteorSettings = getEnvironmentVariable('METEOR_SETTINGS', environmentVariables);
