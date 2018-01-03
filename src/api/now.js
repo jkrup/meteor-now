@@ -35,6 +35,8 @@ export const constructNowOptions = async () => {
     ...remainingVariables,
   ];
 
+  console.log("now options are ", options);
+
   // construct the METEOR_SETTINGS, first by checking if user passed
   // -e METEOR_SETTINGS='{ "foo": "bar" }' option to meteor-now
   let meteorSettings = getEnvironmentVariable('METEOR_SETTINGS', environmentVariables);
@@ -70,6 +72,6 @@ export const deploy = async () => {
       logger.succeed();
     }
   } catch (e) {
-    logger.error('Something went wrong with now');
+    logger.error('Something went wrong with now: ' + JSON.stringify(e));
   }
 };

@@ -17,7 +17,7 @@ export const getEnvironmentVariables = () => {
     const envArray = e.split('=');
     return {
       name: envArray[0],
-      value: envArray[1],
+      value: envArray.length > 2 ? ["\"", envArray.slice(1, envArray.length).join("="), "\""].join("") : envArray[1],
     };
   });
 };
