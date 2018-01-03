@@ -69,6 +69,6 @@ export const deploy = async () => {
       logger.succeed();
     }
   } catch (e) {
-    logger.error('Something went wrong with now: ' + JSON.stringify(e));
+    logger.error('Something went wrong with now', e);
   }
 };
