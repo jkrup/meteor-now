@@ -1,6 +1,6 @@
 {
   "name": "meteor-now",
-  "version": "0.5.3",
+  "version": "0.5.4",
   "description": "Deploy meteor apps with one command using now.sh (https://zeit.co/now)",
   "repository": "https://github.com/jkrup/meteor-now",
   "author": "Justin Krup",
