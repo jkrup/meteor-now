@@ -82,7 +82,7 @@ $ meteor-now -e METEOR_SETTINGS=@meteor-settings -e MONGO_URL=...
 Following the convention of the `NODE_ENV` environment variable, `meteor-now` uses `NODE_ENV` to determine which file to look for.
 It will either look for `development.settings.json` or `production.settings.json` in your root Meteor directory.
 
-Note that `meteor-now` by default looks for `development.settings.json` unless otherwise specified by `-e NODE_ENV=development` or `-e METEOR_SETTINGS='{ "foo": "bar" }'`.
+Note that `meteor-now` by default looks for `development.settings.json` unless otherwise specified by `-e NODE_ENV=production` or `-e METEOR_SETTINGS='{ "foo": "bar" }'`.
 
 ## Debug
 In order to see detailed deployment logs as they happen, pass the `-d` when you deploy.
