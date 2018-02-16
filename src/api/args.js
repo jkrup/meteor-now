@@ -15,9 +15,13 @@ export const getEnvironmentVariables = () => {
   const argsArray = args instanceof Array ? args : [args];
   return argsArray.map((e) => {
     const envArray = e.split('=');
+    let val = envArray[1];
+    if (envArray.length > 2) {
+      val = ['"', envArray.slice(1, envArray.length).join('='), '"'].join('');
+    }
     return {
       name: envArray[0],
-      value: envArray[1],
+      value: val,
     };
   });
 };
@@ -48,6 +52,7 @@ export const getRemainingVariables = (environmentVariables = getEnvironmentVaria
 // get remaining options that user has passsed to meteor-now
 export const getRemainingOptions = () => {
   const args = getArgs();
+  console.log('args are ', args);
   return (
     Object.entries(args)
       // filter out specified list of options
