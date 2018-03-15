@@ -10,7 +10,7 @@ export const getDockerImage = () => {
   if (dockerImage) return dockerImage;
   if (parseInt(getMicroVersion(), 10) < 4) return 'nodesource/jessie:0.10.43';
   return 'node:carbon';
-}
+};
 
 // check if mongo url was passed as a env var
 export const shouldIncludeMongo = () => !getEnvironmentVariable('MONGO_URL');
