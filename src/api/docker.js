@@ -5,8 +5,12 @@ import { getMicroVersion } from './meteor';
 import { getEnvironmentVariable, getArg } from './args';
 
 // get docker image version
-export const getDockerImage = () =>
-  (parseInt(getMicroVersion(), 10) < 4 ? 'nodesource/jessie:0.10.43' : 'node:carbon');
+export const getDockerImage = () => {
+  const dockerImage = getArg('docker-image');
+  if (dockerImage) return dockerImage;
+  if (parseInt(getMicroVersion(), 10) < 4) return 'nodesource/jessie:0.10.43';
+  return 'node:carbon';
+};
 
 // check if mongo url was passed as a env var
 export const shouldIncludeMongo = () => !getEnvironmentVariable('MONGO_URL');
