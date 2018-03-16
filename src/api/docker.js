@@ -7,9 +7,13 @@ import { getEnvironmentVariable, getArg } from './args';
 // get docker image version
 export const getDockerImage = () => {
   const dockerImage = getArg('docker-image');
-  if (dockerImage) return dockerImage;
-  if (parseInt(getMicroVersion(), 10) < 4) return 'nodesource/jessie:0.10.43';
-  return 'node:carbon';
+  if (dockerImage) {
+    return dockerImage;
+  }
+  if (parseInt(getMicroVersion(), 10) < 4) {
+    return 'nodesource/jessie:0.10.43';
+  }
+  return 'node:8.9.4';
 };
 
 // check if mongo url was passed as a env var
