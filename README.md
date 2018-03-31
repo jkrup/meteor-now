@@ -136,6 +136,10 @@ Because now enforces SSL, you may experience some issues with 3rd party resource
 ### I deployed my free app but it's failing to connect to MongoDB
 If you're deploying with an included MongoDB, we've observed that sometimes MongoDB takes a while to start. In this case, Meteor complains that it can't connect to MongoDB. Give it a few more minutes and your app should start. Make sure to refresh the page.
 
+### I want to use a different docker image
+The default docker images are `nodesource/jessie:0.10.43` for Meteor < 1.4 and `node:8.9.4` for >= 1.4.
+If you want to use a different image, use the `--docker-image` flag.
+
 ### My app requires XX can I use my own Dockerfile?
 We're currently support passing a `--deps 'depName1,depName2'` flag so that applications that rely on things like imagemagick are able to work. We are also looking into the ability to specify your own Dockerfile in the case that you require even more customization.
 
