@@ -1,6 +1,7 @@
 import fs from 'file-system';
 import splitFile from 'split-file';
 import del from 'del';
+import tar from 'tar';
 import logger from './logger';
 import { meteorNowBuildPath, tarFileName } from './constants';
 import { getArg } from './args';
@@ -15,6 +16,11 @@ export const renameFile = (oldPath, newPath) => fs.renameSync(oldPath, newPath);
 // split meteor bundle into pieces
 export const prepareBundle = async () => {
   const bundlePath = `${meteorNowBuildPath}/${tarFileName}`;
+  await tar.x({
+    file: bundlePath,
+    cwd: meteorNowBuildPath,
+  }, ['bundle/programs/server/package.json']);
+
   try {
     if (getArg('nosplit')) {
       renameFile(bundlePath, `${meteorNowBuildPath}/bundle.tar.gz`);
