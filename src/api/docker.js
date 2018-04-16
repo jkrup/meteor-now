@@ -63,7 +63,7 @@ WORKDIR ../../
 ${includeMongo ? 'COPY supervisord.conf /etc/supervisor/supervisord.conf' : ''}
 EXPOSE 3000
 ${includeMongo ? 'CMD ["supervisord"]' : 'CMD ["node", "main.js"]'}
-HEALTHCHECK --interval=1m --timeout=5s CMD curl -f http://localhost:3000/ || exit 1`;
+HEALTHCHECK --interval=20s --timeout=8s --retries=3 CMD curl -f http://localhost:3000/ || exit 1`;
 };
 
 // construct the supervisord contents
