@@ -62,7 +62,8 @@ RUN npm install
 WORKDIR ../../
 ${includeMongo ? 'COPY supervisord.conf /etc/supervisor/supervisord.conf' : ''}
 EXPOSE 3000
-${includeMongo ? 'CMD ["supervisord"]' : 'CMD ["node", "main.js"]'}`;
+${includeMongo ? 'CMD ["supervisord"]' : 'CMD ["node", "main.js"]'}
+HEALTHCHECK --interval=1m --timeout=5s --start-period=10s CMD curl -f http://localhost:3000/ || exit 1`;
 };
 
 // construct the supervisord contents
