@@ -57,7 +57,7 @@ const getHealthcheckFileContents = () => {
 const options = {  
   host: 'localhost',
   port: 3000,
-  path: ${path},
+  path: '${path}',
   timeout : ${timeout}
 };
 
@@ -69,7 +69,8 @@ request.on('error', err => {
   process.exit(1);
 });
 
-request.end();`;
+request.end();
+`;
 };
 
 // construct the Dockerfile contents
