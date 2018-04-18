@@ -100,9 +100,9 @@ ${includeMongo ? 'COPY supervisord.conf /etc/supervisor/supervisord.conf' : ''}
 EXPOSE 3000
 ${includeMongo ? 'CMD ["supervisord"]' : 'CMD ["node", "main.js"]'}
 HEALTHCHECK \
-  --interval=${getHealthcheckInterval} \
+  --interval=${getHealthcheckInterval()} \
   --timeout=${getEnvironmentVariable('HEALTHCHECK_TIMEOUT') || '10s'} \
-  --retries=${getHealthcheckRetries} \
+  --retries=${getHealthcheckRetries()} \
   CMD node healthcheck.js`;
 };
 
