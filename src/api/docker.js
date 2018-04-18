@@ -103,7 +103,7 @@ HEALTHCHECK \
   --interval=${getHealthcheckInterval()} \
   --timeout=${getEnvironmentVariable('HEALTHCHECK_TIMEOUT') || '10s'} \
   --retries=${getHealthcheckRetries()} \
-  CMD node healthcheck.js`;
+  CMD node /usr/src/app/healthcheck.js`;
 };
 
 // construct the supervisord contents
