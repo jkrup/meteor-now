@@ -53,14 +53,15 @@ RUN apt-get install -y supervisor
 VOLUME ["/data/db"]`
     : ''}
 LABEL name="${projectName}"
-COPY . /usr/src/app/
-WORKDIR /usr/src/app
+COPY bundle/programs/server/package.json /usr/src/app/bundle/programs/server/package.json
+WORKDIR /usr/src/app/bundle/programs/server
+RUN npm install
+WORKDIR ../../..
+COPY . .
 ${!getArg('nosplit') ? 'RUN cat *sf-part* > bundle.tar.gz' : ''}
 RUN tar -xzf bundle.tar.gz
-WORKDIR bundle/programs/server
-RUN npm install
-WORKDIR ../../
 ${includeMongo ? 'COPY supervisord.conf /etc/supervisor/supervisord.conf' : ''}
+WORKDIR bundle
 EXPOSE 3000
 ${includeMongo ? 'CMD ["supervisord"]' : 'CMD ["node", "main.js"]'}`;
 };
