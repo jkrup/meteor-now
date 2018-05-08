@@ -36,6 +36,43 @@ export const getDependencyInstallScripts = (deps = getDeps('deps')) => {
     );
 };
 
+const getHealthcheckPath = () => getEnvironmentVariable('HEALTHCHECK_PATH') || '/';
+
+const getHealthcheckTimeout = () => getEnvironmentVariable('HEALTHCHECK_TIMEOUT') || 5000;
+
+// the call timeout of the healthcheck has to be longer than the actual timeout
+const getHealthcheckCallTimeout = () => `${Math.parseInt(getHealthcheckTimeout() / 1000 + 5)}s`;
+
+const getHealthcheckInterval = () => getEnvironmentVariable('HEALTHCHECK_INTERVAL') || '20s';
+
+const getHealthcheckRetries = () => getEnvironmentVariable('HEALTHCHECK_RETRIES') || '3';
+
+// construct the healthceck contents
+const getHealthcheckFileContents = () => {
+  const path = getHealthcheckPath();
+  const timeout = getHealthcheckTimeout();
+  
+  return `const http = require('http');
+
+const options = {  
+  host: 'localhost',
+  port: 3000,
+  path: '${path}',
+  timeout : ${timeout}
+};
+
+const request = http.request(options, res => {  
+  res.statusCode == 200 ? process.exit(0) : process.exit(1);
+});
+
+request.on('error', err => {  
+  process.exit(1);
+});
+
+request.end();
+`;
+};
+
 // construct the Dockerfile contents
 export const getDockerfileContents = async () => {
   // check if user pass any --deps to install in the image
@@ -63,7 +100,12 @@ RUN tar -xzf bundle.tar.gz
 ${includeMongo ? 'COPY supervisord.conf /etc/supervisor/supervisord.conf' : ''}
 WORKDIR bundle
 EXPOSE 3000
-${includeMongo ? 'CMD ["supervisord"]' : 'CMD ["node", "main.js"]'}`;
+${includeMongo ? 'CMD ["supervisord"]' : 'CMD ["node", "main.js"]'}
+HEALTHCHECK \
+  --interval=${getHealthcheckInterval()} \
+  --timeout=${getEnvironmentVariable('HEALTHCHECK_TIMEOUT') || '10s'} \
+  --retries=${getHealthcheckRetries()} \
+  CMD node /usr/src/app/healthcheck.js`;
 };
 
 // construct the supervisord contents
@@ -92,6 +134,7 @@ export const prepareDockerConfig = async () => {
       // create a supervisord.conf file to run mongodb inside the container
       await writeFile(`${meteorNowBuildPath}/supervisord.conf`, getSupervisordFileContents());
     }
+    await writeFile(`${meteorNowBuildPath}/healthcheck.js`, getHealthcheckFileContents());
     logger.succeed();
   } catch (e) {
     // eslint-disable-next-line
