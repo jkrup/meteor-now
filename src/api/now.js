@@ -49,7 +49,7 @@ export const constructNowOptions = async () => {
   // get any remaining custom flags passed in by user
   const remainingOptions = getRemainingOptions();
   if (remainingOptions) {
-    options.push(remainingOptions);
+    options.push(flattenOptions(remainingOptions));
   }
 
   return options;
