@@ -12,8 +12,10 @@ export const getDockerImage = () => {
   }
   if (parseInt(getMicroVersion(), 10) < 4) {
     return 'nodesource/jessie:0.10.43';
+  } else if (parseInt(getMicroVersion(), 10) < 7) {
+    return 'node:8.9.4';
   }
-  return 'node:8.9.4';
+  return 'node:8.11.2';
 };
 
 // check if mongo url was passed as a env var
