@@ -5,14 +5,15 @@ import { getMicroVersion } from './meteor';
 import { getEnvironmentVariable, getArg } from './args';
 
 // get docker image version
-export const getDockerImage = () => {
+export const getDockerImage = async () => {
   const dockerImage = getArg('docker-image');
   if (dockerImage) {
     return dockerImage;
   }
-  if (parseInt(getMicroVersion(), 10) < 4) {
+  const version = parseInt(await getMicroVersion(), 10);
+  if (version < 4) {
     return 'nodesource/jessie:0.10.43';
-  } else if (parseInt(getMicroVersion(), 10) < 7) {
+  } else if (version < 7) {
     return 'node:8.9.4';
   }
   return 'node:8.11.2';
@@ -43,7 +44,7 @@ export const getDockerfileContents = async () => {
   // check if user pass any --deps to install in the image
   const deps = getDeps();
   // get approriate docker image vesion
-  const dockerImage = getDockerImage();
+  const dockerImage = await getDockerImage();
   // check to see if mogno should be included
   const includeMongo = shouldIncludeMongo();
   return `FROM ${dockerImage}
