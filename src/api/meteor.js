@@ -13,13 +13,14 @@ export const getVersion = async () => {
 // get the minor version number of the meteor release
 export const getMicroVersion = async () => {
   const version = await getVersion();
-  return version.split('.')[1];
+  return parseInt(version.split('.')[1], 10);
 };
 
 // check to see if server only flag should be
 // passed to meteor build
-export const shouldBeServerOnly = () => {
-  if (parseInt(getMicroVersion(), 10) < 3) {
+export const shouldBeServerOnly = async () => {
+  const version = await getMicroVersion();
+  if (version < 3) {
     return false;
   }
   return true;
@@ -29,10 +30,11 @@ export const shouldBeServerOnly = () => {
 export const buildMeteorApp = async () => {
   try {
     logger.info('Building meteor app (this can take several minutes)');
+    const serverOnly = await shouldBeServerOnly()
     await spawnProcess('meteor', [
       'build',
       meteorNowBuildPath,
-      shouldBeServerOnly() ? '--server-only' : '',
+      serverOnly ? '--server-only' : '',
       '--architecture=os.linux.x86_64',
     ]);
     logger.succeed();
