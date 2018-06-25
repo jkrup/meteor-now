@@ -137,7 +137,7 @@ Because now enforces SSL, you may experience some issues with 3rd party resource
 If you're deploying with an included MongoDB, we've observed that sometimes MongoDB takes a while to start. In this case, Meteor complains that it can't connect to MongoDB. Give it a few more minutes and your app should start. Make sure to refresh the page.
 
 ### I want to use a different docker image
-The default docker images are `nodesource/jessie:0.10.43` for Meteor < 1.4 and `node:8.9.4` for >= 1.4.
+The default docker images are `nodesource/jessie:0.10.43` for Meteor < 1.4, `node:8.9.4` for < 1.7 and `node:8.11.2` for >= 1.7.
 If you want to use a different image, use the `--docker-image` flag.
 
 ### My app requires XX can I use my own Dockerfile?
