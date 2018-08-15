@@ -81,11 +81,7 @@ export const deploy = async () => {
 // alias an app
 export const alias = async (deploymentUrl) => {
   try {
-    logger.info('Checking for alias option');
-    logger.succeed();
-
     const aliasDomain = getArg('alias');
-    console.log(deploymentUrl, aliasDomain);
     if (deploymentUrl && aliasDomain) {
       logger.info('Aliasing deployment to', aliasDomain);
       spawnProcess('now', ['alias', deploymentUrl, aliasDomain]);
