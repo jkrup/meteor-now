@@ -1,5 +1,6 @@
 import yargs from 'yargs';
 import { ignoreVarsArray, ignoreOptionsArray } from './constants';
+import logger from './logger';
 
 // returns all args as an yargs object
 export const getArgs = (argv = process.argv) => yargs(argv).argv;
@@ -52,7 +53,7 @@ export const getRemainingVariables = (environmentVariables = getEnvironmentVaria
 // get remaining options that user has passsed to meteor-now
 export const getRemainingOptions = () => {
   const args = getArgs();
-  console.log('args are ', args);
+  logger.info('args are:', args);
   return (
     Object.entries(args)
       // filter out specified list of options
