@@ -131,6 +131,8 @@ Provisioning certificate for www.meteor-now.com
 Success! Alias created: https://www.meteor-now.com now points to https://meteor-now-site-izdolpdrvv.now.sh [copied to clipboard]
 ```
 
+You can also pass the `--alias abc.com` option to `meteor-now` and it will automatically run the alias after the deployment completes. 
+
 Read [this blog post](https://zeit.co/blog/now-alias) for more information.
 
 ### Why are my XX resource not loading
