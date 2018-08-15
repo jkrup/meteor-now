@@ -66,15 +66,29 @@ export const deploy = async () => {
     // in order to properly pass all the options to now
     const deploymentUrl = await spawnProcess('now', flattenOptions(nowOptions));
 
-    // TODO: if --alias is set then run the alias command after the deploy command
-    const aliasDomain = getArg('alias');
-    if (aliasDomain) {
-      console.log('running alias deployment');
-    }
-
     logger.succeed();
     if (!isDebug()) {
       logger.info(`App url is ${deploymentUrl}`);
+      logger.succeed();
+    }
+    return deploymentUrl;
+  } catch (e) {
+    logger.error('Something went wrong with now', e);
+    return null;
+  }
+};
+
+// alias an app
+export const alias = async (deploymentUrl) => {
+  try {
+    logger.info('Checking for alias option');
+    logger.succeed();
+
+    const aliasDomain = getArg('alias');
+    console.log(deploymentUrl, aliasDomain);
+    if (deploymentUrl && aliasDomain) {
+      logger.info('Aliasing deployment to', aliasDomain);
+      spawnProcess('now', ['alias', deploymentUrl, aliasDomain]);
       logger.succeed();
     }
   } catch (e) {
