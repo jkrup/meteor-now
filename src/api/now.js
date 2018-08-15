@@ -6,6 +6,7 @@ import {
   getRemainingVariables,
   flattenOptions,
   isDebug,
+  getArg,
 } from './args';
 import { getMeteorSettings } from './meteor';
 import { meteorNowBuildPath } from './constants';
@@ -80,6 +81,7 @@ export const constructNowOptions = async () => {
 
   // get any remaining custom flags passed in by user
   const remainingOptions = getRemainingOptions();
+
   if (remainingOptions) {
     options.push(flattenOptions(remainingOptions));
   }
@@ -113,9 +115,26 @@ export const deploy = async () => {
     // spawn child process to execute now command. Flatten nowOptions
     // in order to properly pass all the options to now
     const deploymentUrl = await spawnProcess('now', flattenOptions(nowOptions));
+
     logger.succeed();
     if (!isDebug()) {
       logger.info(`App url is ${deploymentUrl}`);
+      logger.succeed();
+    }
+    return deploymentUrl;
+  } catch (e) {
+    logger.error('Something went wrong with now', e);
+    return null;
+  }
+};
+
+// alias an app
+export const alias = async (deploymentUrl) => {
+  try {
+    const aliasDomain = getArg('alias');
+    if (deploymentUrl && aliasDomain) {
+      logger.info('Aliasing deployment to', aliasDomain);
+      spawnProcess('now', ['alias', deploymentUrl, aliasDomain]);
       logger.succeed();
     }
   } catch (e) {

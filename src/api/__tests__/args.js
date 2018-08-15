@@ -16,7 +16,7 @@ describe('args test', () => {
   });
 
   test('it should return all default args', () => {
-    process.argv = ['node', '-e', 'MONGO_URL=mongodb://127.0.0.1:27017', '--deps', 'imagemagick'];
+    process.argv = ['node', '-e', 'MONGO_URL=mongodb://127.0.0.1:27017', '--deps', 'imagemagick', '--alias', 'abc.com'];
     const args = getArgs();
     expect(args).toEqual({
       $0: '-e',
@@ -25,6 +25,7 @@ describe('args test', () => {
       version: false,
       deps: 'imagemagick',
       e: 'MONGO_URL=mongodb://127.0.0.1:27017',
+      alias: 'abc.com',
     });
   });
 
@@ -36,6 +37,8 @@ describe('args test', () => {
       '--deps',
       'imagemagick',
       '--public',
+      '--alias',
+      'abc.com',
     ]);
     expect(args).toEqual({
       $0: '-e',
@@ -45,6 +48,7 @@ describe('args test', () => {
       deps: 'imagemagick',
       e: 'MONGO_URL=mongodb://127.0.0.1:27017',
       public: true,
+      alias: 'abc.com',
     });
   });
 
@@ -129,7 +133,7 @@ describe('args test', () => {
       'abc.com',
     ];
     const remainingOptions = getRemainingOptions();
-    expect(remainingOptions).toEqual([['--public'], ['--alias', 'abc.com']]);
+    expect(remainingOptions).toEqual([['--public']]);
   });
 
   test('it should correctly flatten options', () => {
@@ -161,6 +165,8 @@ describe('args test', () => {
       '--deps',
       'abc',
       '--nosplit',
+      '--alias',
+      'abc.com',
     ];
     const remainingVariables = getRemainingVariables();
     expect(remainingVariables).toEqual([['-e', 'MY_SPECIAL_VAR=cats'], ['-e', 'SECRET=litter']]);
