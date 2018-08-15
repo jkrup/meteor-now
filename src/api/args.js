@@ -52,7 +52,7 @@ export const getRemainingVariables = (environmentVariables = getEnvironmentVaria
 // get remaining options that user has passsed to meteor-now
 export const getRemainingOptions = () => {
   const args = getArgs();
-  console.log('args are ', args);
+  console.log('args are', args); /* eslint-disable no-console */
   return (
     Object.entries(args)
       // filter out specified list of options
