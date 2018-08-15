@@ -46,7 +46,7 @@ In your Meteor app directory, run `meteor-now`.
 There are a few things you'll want to know before using `meteor-now` in production. And your deploy command will probably look more like the following:
 
 ```
-meteor-now -e MONGO_URL=mongodb://<username>:<pass>@.... -e ROOT_URL=https://mydomain.com -e NODE_ENV=production`
+meteor-now -e MONGO_URL=mongodb://<username>:<pass>@.... -e ROOT_URL=https://mydomain.com -e NODE_ENV=production
 ```
 
 If your app uses MongoDB at all you will want to specify a `-e MONGO_URL=` for persistent storage of data. [Mlab](http://mlab.com) has a great free sandbox tier, but also not recommended for production (you will probably want to pay at some point).
