@@ -80,6 +80,14 @@ command=mongod
 [program:node]
 command=node "/usr/src/app/bundle/main.js"`;
 
+const nowJsonFileContents = `
+{
+  "features": {
+    "cloud": "v1"
+  }
+}
+`;
+
 // prepares all docker related files
 export const prepareDockerConfig = async () => {
   try {
@@ -97,6 +105,7 @@ export const prepareDockerConfig = async () => {
       // create a supervisord.conf file to run mongodb inside the container
       await writeFile(`${meteorNowBuildPath}/supervisord.conf`, getSupervisordFileContents());
     }
+    await writeFile(`${meteorNowBuildPath}/now.json`, nowJsonFileContents);
     logger.succeed();
   } catch (e) {
     // eslint-disable-next-line
