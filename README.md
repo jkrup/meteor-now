@@ -55,7 +55,9 @@ You should also have a paid account with [▲now](https://zeit.co/now) so that y
 
 You will also likely want to specify a `-e ROOT_URL=` [http://stackoverflow.com/questions/24046186/meteor-what-is-the-purpose-of-root-url-and-to-what-should-it-be-defined](http://stackoverflow.com/questions/24046186/meteor-what-is-the-purpose-of-root-url-and-to-what-should-it-be-defined)
 
-Finally you should have a `production.settings.json` in your project directory if you are using `METEOR_SETTINGS` (i.e. passing in `--settings`) and use `-e NODE_ENV=production` to tell `meteor-now` to use that.
+Also you should have a `production.settings.json` in your project directory if you are using `METEOR_SETTINGS` (i.e. passing in `--settings`) and use `-e NODE_ENV=production` to tell `meteor-now` to use that.
+
+Finally, the name of the application on zeit will default to the name of the folder being deployed if you don't provide one, but if you'd like to set the name manually, you may add `-e PROJECT_NAME=your_project` to your deployment string
 
 # How
 ![METEOR-NOW](assets/zeit-meteor.png "METEOR-NOW")

@@ -1,7 +1,7 @@
 import os from 'os';
 import {
   getEnvironmentVariable,
-  getEnvironmentVariables
+  getEnvironmentVariables,
 } from './args';
 
 const isWin = /^win/.test(process.platform);
@@ -14,7 +14,7 @@ export const getFolderName = (path, isWinOverride = isWin) => {
 
 export const getProjectName = async () => {
   const environmentVariables = await getEnvironmentVariables();
-  return getEnvironmentVariable('PROJECT_NAME', environmentVariables)
+  return getEnvironmentVariable('PROJECT_NAME', environmentVariables);
 };
 
 // run immediately
