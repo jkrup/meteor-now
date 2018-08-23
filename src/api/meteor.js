@@ -30,7 +30,7 @@ export const shouldBeServerOnly = async () => {
 export const buildMeteorApp = async () => {
   try {
     logger.info('Building meteor app (this can take several minutes)');
-    const serverOnly = await shouldBeServerOnly()
+    const serverOnly = await shouldBeServerOnly();
     await spawnProcess('meteor', [
       'build',
       meteorNowBuildPath,
