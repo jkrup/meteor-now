@@ -31,12 +31,7 @@ export const getDependencyInstallScripts = (deps = getDeps('deps')) => {
     return '';
   }
   const delimiter = deps.includes(',') ? ',' : ' ';
-  return deps
-    .split(delimiter)
-    .reduce(
-      (accumulator, currentValue) => `${accumulator}RUN apt-get install -y ${currentValue}\n`,
-      '',
-    );
+  return `RUN apt-get install -y ${deps.split(delimiter).join(' ')}\n`;
 };
 
 // construct the Dockerfile contents
