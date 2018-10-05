@@ -51,7 +51,8 @@ ${includeMongo
 RUN apt-get install -y supervisor
 VOLUME ["/data/db"]`
     : ''}
-${deps ? getDependencyInstallScripts(deps) : ''}    
+${deps ? getDependencyInstallScripts(deps) : ''}
+${includeMongo || deps ? 'RUN rm -rf /var/lib/apt/lists/*' : ''}
 LABEL name="${projectName}"
 COPY bundle/programs/server/package.json /usr/src/app/bundle/programs/server/package.json
 WORKDIR /usr/src/app/bundle/programs/server
