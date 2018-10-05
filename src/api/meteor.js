@@ -54,7 +54,7 @@ export const getMeteorSettings = async () => {
       const settingsFile = await readFile(settingsFilePath);
       return settingsFile.replace(/\r?\n|\r/g, '');
     } catch (e) {
-      throw e;
+      return null;
     }
   }
   return null;
