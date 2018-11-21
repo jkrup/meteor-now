@@ -28,8 +28,17 @@ export default class Logger {
     }
   }
   static log(type, message, rest) {
-    const restOfMessage = [...rest][0] && rest.join(' ');
-    const prefixed = `${logPrefix}${message} ${!restOfMessage ? '' : restOfMessage}`;
+    let restOfMessage;
+    if (rest.length === 0) {
+      restOfMessage = null;
+    } else if (typeof rest[0] !== 'string') {
+      restOfMessage = JSON.stringify(rest, null, 4);
+    } else {
+      restOfMessage = rest.join(' ');
+    }
+    const prefixed = `${logPrefix}${message} ${!restOfMessage
+      ? ''
+      : restOfMessage}`;
     if (type === 'succeed') {
       spinner.succeed();
     } else {
