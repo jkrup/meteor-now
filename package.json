@@ -15,6 +15,7 @@
   "bin": "./build/main.js",
   "scripts": {
     "build": "webpack",
+    "build:watch": "webpack --watch",
     "lint": "eslint src",
     "prepublishOnly": "npm run build",
     "test": "npm run lint && jest",
