@@ -3,6 +3,7 @@ import logger from './logger';
 import { meteorNowBuildPath, projectName } from './constants';
 import { getMicroVersion } from './meteor';
 import { getEnvironmentVariable, getArg } from './args';
+import { getEnvVarFromNowJson } from './now';
 
 // get docker image version
 export const getDockerImage = async () => {
@@ -20,7 +21,14 @@ export const getDockerImage = async () => {
 };
 
 // check if mongo url was passed as a env var
-export const shouldIncludeMongo = () => !getEnvironmentVariable('MONGO_URL');
+export const shouldIncludeMongo = async () => {
+  const mongoUrlPassedAsParam = getEnvironmentVariable('MONGO_URL');
+  const mongoUrlFromNowJson = await getEnvVarFromNowJson('MONGO_URL');
+  if (mongoUrlPassedAsParam || mongoUrlFromNowJson) {
+    return false;
+  }
+  return true;
+};
 
 // get the value of --deps flag
 export const getDeps = () => getArg('deps');
@@ -34,7 +42,8 @@ export const getDependencyInstallScripts = (deps = getDeps('deps')) => {
   return deps
     .split(delimiter)
     .reduce(
-      (accumulator, currentValue) => `${accumulator}RUN apt-get install ${currentValue}\n`,
+      (accumulator, currentValue) =>
+        `${accumulator}RUN apt-get install ${currentValue}\n`,
       '',
     );
 };
@@ -46,7 +55,7 @@ export const getDockerfileContents = async () => {
   // get approriate docker image vesion
   const dockerImage = await getDockerImage();
   // check to see if mogno should be included
-  const includeMongo = shouldIncludeMongo();
+  const includeMongo = await shouldIncludeMongo();
   return `FROM ${dockerImage}
 ${deps ? getDependencyInstallScripts(deps) : ''}
 ${includeMongo
@@ -80,14 +89,6 @@ command=mongod
 [program:node]
 command=node "/usr/src/app/bundle/main.js"`;
 
-const nowJsonFileContents = `
-{
-  "features": {
-    "cloud": "v1"
-  }
-}
-`;
-
 // prepares all docker related files
 export const prepareDockerConfig = async () => {
   try {
@@ -96,16 +97,20 @@ export const prepareDockerConfig = async () => {
     await writeFile(`${meteorNowBuildPath}/Dockerfile`, dockerfileContents);
 
     // if user did not pass MONGO_URL
-    if (shouldIncludeMongo()) {
+    if (await shouldIncludeMongo()) {
       logger.warn(
         'WARNING: Did not pass a MONGO_URL. Bundling a NON-PRODUCTION version of MongoDB with your application. Read about the limitations here: https://git.io/vM72E',
       );
-      logger.warn('WARNING: It might take a few minutes for the app to connect to the bundled MongoDB instance after the deployment has completed.');
+      logger.warn(
+        'WARNING: It might take a few minutes for the app to connect to the bundled MongoDB instance after the deployment has completed.',
+      );
       logger.debug('creating supervisord.conf');
       // create a supervisord.conf file to run mongodb inside the container
-      await writeFile(`${meteorNowBuildPath}/supervisord.conf`, getSupervisordFileContents());
+      await writeFile(
+        `${meteorNowBuildPath}/supervisord.conf`,
+        getSupervisordFileContents(),
+      );
     }
-    await writeFile(`${meteorNowBuildPath}/now.json`, nowJsonFileContents);
     logger.succeed();
   } catch (e) {
     // eslint-disable-next-line

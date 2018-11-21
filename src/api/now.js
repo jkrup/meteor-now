@@ -8,8 +8,30 @@ import {
   isDebug,
 } from './args';
 import { getMeteorSettings } from './meteor';
-import { meteorNowBuildPath, projectName } from './constants';
+import { meteorNowBuildPath } from './constants';
 import logger from './logger';
+import { readFile, writeFile } from './files';
+
+export const getNowJson = async () => {
+  let nowJsonString;
+  try {
+    nowJsonString = await readFile('./now.json');
+  } catch (e) {
+    return null;
+  }
+  if (!nowJsonString) {
+    return null;
+  }
+  return JSON.parse(nowJsonString);
+};
+
+export const getEnvVarFromNowJson = async (name) => {
+  const nowJson = await getNowJson();
+  if (!nowJson || !nowJson.env || !nowJson.env[name]) {
+    return null;
+  }
+  return nowJson.env[name];
+};
 
 // construct an array of options to be passed to the now command
 export const constructNowOptions = async () => {
@@ -17,10 +39,12 @@ export const constructNowOptions = async () => {
   const environmentVariables = await getEnvironmentVariables();
   // construct the ROOT_URL variable
   const rootUrl =
-    getEnvironmentVariable('ROOT_URL', environmentVariables) || 'http://localhost:3000';
+    getEnvironmentVariable('ROOT_URL', environmentVariables) ||
+    'http://localhost:3000';
   // construct the MONGO_URL variable
   const mongoUrl =
-    getEnvironmentVariable('MONGO_URL', environmentVariables) || 'mongodb://127.0.0.1:27017';
+    getEnvironmentVariable('MONGO_URL', environmentVariables) ||
+    'mongodb://127.0.0.1:27017';
 
   const remainingVariables = getRemainingVariables(environmentVariables);
 
@@ -28,15 +52,23 @@ export const constructNowOptions = async () => {
   // and will eventually be a string seperated by spaces.
   const options = [
     meteorNowBuildPath,
-    ['--name', projectName],
     ['-e', 'PORT=3000'],
-    ['-e', `ROOT_URL=${rootUrl}`],
-    ['-e', `MONGO_URL=${mongoUrl}`],
     ...remainingVariables,
   ];
+
+  if (!await getEnvVarFromNowJson('ROOT_URL')) {
+    options.push(['-e', `ROOT_URL=${rootUrl}`]);
+  }
+  if (!await getEnvVarFromNowJson('MONGO_URL')) {
+    options.push(['-e', `MONGO_URL=${mongoUrl}`]);
+  }
+
   // construct the METEOR_SETTINGS, first by checking if user passed
   // -e METEOR_SETTINGS='{ "foo": "bar" }' option to meteor-now
-  let meteorSettings = getEnvironmentVariable('METEOR_SETTINGS', environmentVariables);
+  let meteorSettings = getEnvironmentVariable(
+    'METEOR_SETTINGS',
+    environmentVariables,
+  );
   // if not, check if still no METEOR_SETTINGS exist
   if (!meteorSettings) {
     // check if NODE_ENV is passed and look for production.settings.json file
@@ -55,6 +87,24 @@ export const constructNowOptions = async () => {
   return options;
 };
 
+export const prepareNowJson = async () => {
+  const nowJson = await getNowJson();
+  logger.debug('now.json', nowJson);
+  await writeFile(
+    `${meteorNowBuildPath}/now.json`,
+    JSON.stringify(
+      Object.assign(
+        {
+          features: {
+            cloud: 'v1',
+          },
+        },
+        nowJson,
+      ),
+    ),
+  );
+};
+
 // deploy app with correct options
 export const deploy = async () => {
   try {
@@ -69,6 +119,6 @@ export const deploy = async () => {
       logger.succeed();
     }
   } catch (e) {
-    logger.error('Something went wrong with now', e);
+    logger.error('now cli process threw an error', e);
   }
 };
