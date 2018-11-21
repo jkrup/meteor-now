@@ -7,7 +7,6 @@ describe('now test', () => {
     const nowOptions = await constructNowOptions();
     expect(nowOptions).toEqual([
       `${os.homedir()}/.meteor-now/build`,
-      ['--name', 'meteor-now'],
       ['-e', 'PORT=3000'],
       ['-e', 'ROOT_URL=http://localhost:3000'],
       ['-e', 'MONGO_URL=mongodb://127.0.0.1:27017'],
@@ -20,11 +19,10 @@ describe('now test', () => {
     const nowOptions = await constructNowOptions();
     expect(nowOptions).toEqual([
       `${os.homedir()}/.meteor-now/build`,
-      ['--name', 'meteor-now'],
       ['-e', 'PORT=3000'],
+      ['-e', 'MAGIC_VAR=magical'],
       ['-e', 'ROOT_URL=http://localhost:3000'],
       ['-e', 'MONGO_URL=mongodb://127.0.0.1:27017'],
-      ['-e', 'MAGIC_VAR=magical'],
       ['-e', 'METEOR_SETTINGS=\'\'{ "foo": "bar" }\'\''], [],
     ]);
   });
