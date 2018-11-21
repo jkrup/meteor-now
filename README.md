@@ -90,6 +90,9 @@ In order to see detailed deployment logs as they happen, pass the `-d` when you 
 ## Bundle Splitting
 The `now` free tier has a limitation of 1mb per file. As a workaround, we split the final bundle into pieces prior to uploading. If you are on a paid plan, you can turn this off by passing the `--nosplit` flag like so `meteor-now --nosplit`.
 
+## now.json
+You can include a regular `now.json` file in your project directory. `meteor-now` will make sure to include it along with your app when it deploys. Specifying now settings in the `package.json` file is not currently supported.
+
 ## FAQ
 ### Can I use this in production?
 Yes– if you are paying for ▲now and using an external database! ▲now supports dynamic autoscaling of apps (with sticky-sessions), you should read all the caveats related to `now` if you are not paying for a monthly plan– You only get 1GB of bandwidth per month, and also your source files are made (somewhat) public at your url /_src
