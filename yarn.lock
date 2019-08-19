@@ -3648,7 +3648,11 @@ rx-lite@*, rx-lite@^4.0.8:
   version "4.0.8"
   resolved "https://registry.yarnpkg.com/rx-lite/-/rx-lite-4.0.8.tgz#0b1e11af8bc44836f04a6407e92da42467b79444"
 
-safe-buffer@^5.0.1, safe-buffer@^5.1.0, safe-buffer@^5.1.1, safe-buffer@~5.1.0, safe-buffer@~5.1.1:
+safe-buffer@^5.0.1, safe-buffer@^5.1.0, safe-buffer@^5.1.1, safe-buffer@^5.1.2:
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.2.0.tgz#b74daec49b1148f88c64b68d49b1e815c1f2f519"
+
+safe-buffer@~5.1.0, safe-buffer@~5.1.1:
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.1.1.tgz#893312af69b2123def71f57889001671eeb2c853"
 
@@ -3930,15 +3934,15 @@ tar@^2.2.1:
     inherits "2"
 
 tar@^4.4.1:
-  version "4.4.1"
-  resolved "https://registry.yarnpkg.com/tar/-/tar-4.4.1.tgz#b25d5a8470c976fd7a9a8a350f42c59e9fa81749"
+  version "4.4.2"
+  resolved "https://registry.yarnpkg.com/tar/-/tar-4.4.2.tgz#60685211ba46b38847b1ae7ee1a24d744a2cd462"
   dependencies:
     chownr "^1.0.1"
     fs-minipass "^1.2.5"
     minipass "^2.2.4"
     minizlib "^1.1.0"
     mkdirp "^0.5.0"
-    safe-buffer "^5.1.1"
+    safe-buffer "^5.1.2"
     yallist "^3.0.2"
 
 test-exclude@^4.1.1:
