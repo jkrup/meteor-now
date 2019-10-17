@@ -1,31 +1,10 @@
+## **NOTE: meteor-now is no longer actively maintained.** The recommended way to host Meteor apps is Meteor's own [Galaxy hosting service](https://www.meteor.com/hosting).
+
+---
+
 # Meteor Now [![CircleCI](https://circleci.com/gh/jkrup/meteor-now.svg?style=svg)](https://circleci.com/gh/jkrup/meteor-now) [![npm version](https://badge.fury.io/js/meteor-now.svg)](https://badge.fury.io/js/meteor-now) [![downloads](https://img.shields.io/npm/dm/meteor-now.svg)](https://npmjs.org/package/meteor-now)
 
-`meteor-now` is a tool to let you instantly deploy your Meteor apps with one command using ZEIT's [▲now](http://zeit.co/now) service. Just run `meteor-now` and instantly deploy your Meteor app like you could back in the good 'ol days of `meteor deploy`.
-
-<p align="center">
-  <img src="https://github.com/jkrup/meteor-now/raw/master/assets/meteor-now-intro.gif">
-</p>
-
-## Demo
-[https://meteor-test-msrbsvslpz.now.sh](https://meteor-test-msrbsvslpz.now.sh)
-
-# Install
-Install the `now` and `meteor-now` packages:
-```
-$ npm install -g now meteor-now
-```
-
-Create `now` account
-```
-$ now login
-> Enter your email: <your email>
-> Please follow the link sent to <your email> to log in.
-> Verify that the provided security code in the email matches Pragmatic Manta Ray.
-
-✔ Confirmed email address!
-
-> Logged in successfully. Token saved in ~/.now.json
-```
+`meteor-now` is a tool to let you instantly deploy your Meteor apps with one command using ZEIT [Now](http://zeit.co/). Just run `meteor-now` and instantly deploy your Meteor app like you could back in the good 'ol days of `meteor deploy`.
 
 # Usage
 
